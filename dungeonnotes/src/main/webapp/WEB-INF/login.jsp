@@ -6,58 +6,34 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<title>Login and Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+<title>Dungeon Notes</title>
 </head>
-<body>	
-	<div class="container mt-3">
-		<div>
-			<h1>Welcome!</h1>
-			<h4>Join our growing community.</h4>
-		</div>
-		<div class="d-flex mt-5">
-			<div class="d-flex flex-column col-6">
-				<h3>Register New User</h3>
-				<form:form action="/register" method="POST" modelAttribute="newUser" class="d-flex flex-column col-8 gap-2">
-					<form:errors class="text-danger" path="userName"/>
-					<div class="d-flex justify-content-between">
-						<form:label path="userName">User Name</form:label>
-						<form:input path="userName" type="text"/>
+<body class="has-background-grey-dark" style="min-height: 100vh;">	
+	<div class="has-text-centered p-6">
+		<h1 class="has-text-danger-dark is-family-sans-serif" style="font-size: 48px;">Welcome to Dungeon Notes!</h1>
+	</div>
+	<div class="columns is-centered">
+		<div class="column is-3">
+			<h3 class="title has-text-centered has-text-grey-light">Login User</h3>
+			<form:form action="/login" method="POST" modelAttribute="newLogin">
+				<div class="field">
+					<form:errors class="has-text-danger" path="email"/>
+					<form:label path="email" class="label has-text-grey-light">Email</form:label>
+					<div class="control">
+						<form:input path="email" type="email" class="input"/>
 					</div>
-					<form:errors class="text-danger" path="email"/>
-					<div class="d-flex justify-content-between">
-						<form:label path="email">Email</form:label>
-						<form:input path="email" type="email"/>
+				</div>
+				<div class="field">
+					<form:label path="password" class="label has-text-grey-light">Password</form:label>
+					<div class="control">
+						<form:input path="password" type="password" class="input"/>
 					</div>
-					<form:errors class="text-danger" path="password"/>
-					<div class="d-flex justify-content-between">				
-						<form:label path="password">Password</form:label>
-						<form:input path="password" type="password"/>
-					</div>
-					<form:errors class="text-danger" path="confirm"/>
-					<div class="d-flex justify-content-between">				
-						<form:label path="confirm">Confirm Password</form:label>
-						<form:input path="confirm" type="password"/>
-					</div>
-	
-					<input class="btn bg-info col-3 align-self-end" type="submit" value="Register"/>
-				</form:form>
-			</div>
-			<div class="d-flex flex-column col-6">
-				<h3>Login User</h3>
-				<form:form action="/login" method="POST" modelAttribute="newLogin" class="d-flex flex-column col-8 gap-2">
-					<form:errors class="text-danger" path="email"/>
-					<div class="d-flex justify-content-between">
-						<form:label path="email">Email</form:label>
-						<form:input path="email" type="email"/>
-					</div>
-					<div class="d-flex justify-content-between">
-						<form:label path="password">Password</form:label>
-						<form:input path="password" type="password"/>
-					</div>
-					<input class="btn bg-info col-3 align-self-end" type="submit" value="Login"/>
-				</form:form>
-			</div>
+				</div>
+				<a href="/register">Register New Account</a>
+				<input class="button is-dark has-text-warning is-pulled-right" type="submit" value="Login"/>
+			</form:form>
 		</div>
 	</div>
 </body>

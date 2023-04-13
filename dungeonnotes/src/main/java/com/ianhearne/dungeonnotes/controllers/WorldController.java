@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.World;
+import com.ianhearne.dungeonnotes.services.UserService;
 import com.ianhearne.dungeonnotes.services.WorldService;
 
 @Controller
@@ -25,6 +27,9 @@ public class WorldController {
 	@Autowired
 	WorldService worldService;
 	
+	@Autowired
+	UserService userService;
+	
 	////	GET MAPPINGS    ////
 	
 	@GetMapping("/add")
@@ -33,8 +38,10 @@ public class WorldController {
 			return "redirect:/logout";
 		}
 		
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		
 		model.addAttribute("newWorld", new World());
-		model.addAttribute("userId", (Long) session.getAttribute("userId"));
+		model.addAttribute("user", user);
 		
 		return "world_templates/add_world.jsp";
 	}
@@ -45,9 +52,11 @@ public class WorldController {
 			return "redirect:/logout";
 		}
 		
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		
 		session.setAttribute("worldId", worldId);
 		
-		model.addAttribute("userId", (Long) session.getAttribute("userId"));
+		model.addAttribute("user", user);
 		model.addAttribute("world", worldService.findById(worldId));
 		
 		return "world_templates/show_world.jsp";
@@ -66,9 +75,11 @@ public class WorldController {
 		if(!worldToEdit.getCreator().getId().equals((Long) session.getAttribute("userId"))) {
 			return "redirect:/homepage";
 		}
+		
+		User user = userService.findById((Long) session.getAttribute("userId"));
 
 		model.addAttribute("world", worldToEdit);
-		model.addAttribute("userId", (Long) session.getAttribute("userId"));
+		model.addAttribute("user", user);
 		
 		return "world_templates/edit_world.jsp";
 	}

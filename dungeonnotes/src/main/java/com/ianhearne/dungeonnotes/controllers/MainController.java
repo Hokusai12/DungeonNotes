@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.ianhearne.dungeonnotes.models.LoginUser;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.World;
+import com.ianhearne.dungeonnotes.models.Character;
+import com.ianhearne.dungeonnotes.services.CharacterService;
 import com.ianhearne.dungeonnotes.services.UserService;
 import com.ianhearne.dungeonnotes.services.WorldService;
 
@@ -28,6 +30,9 @@ public class MainController {
 	@Autowired
 	WorldService worldService;
 	
+	@Autowired
+	CharacterService characterService;
+	
 	
 	/*****
 	 * 
@@ -37,7 +42,17 @@ public class MainController {
 	
 	@GetMapping("/")
 	public String loginAndRegistration(Model model) {
+		return "greet_page.jsp";
+	}
+	
+	@GetMapping("/register")
+	public String registrationForm(Model model) {
 		model.addAttribute("newUser", new User());
+		return "register.jsp";
+	}
+	
+	@GetMapping("/login")
+	public String loginForm(Model model) {
 		model.addAttribute("newLogin", new LoginUser());
 		return "login.jsp";
 	}
@@ -95,10 +110,11 @@ public class MainController {
 			session.removeAttribute("worldId");
 		}
 		
-		List<World> allWorlds = worldService.getAll();
+		List<World> allWorlds = worldService.getAllSortedByDate();
+		User user = userService.findById((Long) session.getAttribute("userId"));
 		
+		model.addAttribute("user", user);
 		model.addAttribute("worldList", allWorlds);
-		model.addAttribute("userId", (Long) session.getAttribute("userId"));
 		
 		return "homepage.jsp";
 	}
@@ -106,7 +122,7 @@ public class MainController {
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:/";
+		return "redirect:/login";
 	}
 	
 	/*****
@@ -123,10 +139,20 @@ public class MainController {
 		}
 		
 		List<World> userWorlds = worldService.getAllByCreatorId(id);
+		User user = userService.findById((Long) session.getAttribute("userId"));
 		
 		model.addAttribute("userWorldList", userWorlds);
+		model.addAttribute("user", user);
 		
 		return "user_templates/user_worlds.jsp";
+	}
+	
+	@GetMapping("/user/{id}/characters")
+	public String showUserCharacters(@PathVariable(name="id") Long id, Model model, HttpSession session) {
+		List<Character> userCharacters = characterService.getAllByCreatorId(id);
 		
+		model.addAttribute("characterList", userCharacters);
+		
+		return "character_templates/user_character.jsp";
 	}
 }

@@ -19,6 +19,10 @@ public class WorldService {
 		return repo.findAll();
 	}
 	
+	public List<World> getAllSortedByDate() {
+		return repo.findByOrderByCreatedAtDesc();
+	}
+	
 	public World findById(Long id) {
 		Optional<World> world = repo.findById(id);
 		if(world.isPresent()) {

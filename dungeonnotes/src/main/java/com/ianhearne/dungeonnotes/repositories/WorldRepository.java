@@ -13,4 +13,6 @@ public interface WorldRepository extends CrudRepository<World, Long>{
 	
 	public List<World> findAllByCreatorIdIs(Long creatorId);
 	
+	public List<World> findByOrderByCreatedAtDesc();
+	
 }

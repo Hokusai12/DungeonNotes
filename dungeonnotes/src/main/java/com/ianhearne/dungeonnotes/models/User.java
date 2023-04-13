@@ -48,6 +48,9 @@ public class User {
 	@OneToMany(mappedBy="creator", fetch=FetchType.LAZY)
 	private List<World> worlds;
 	
+	@OneToMany(mappedBy="creator", fetch=FetchType.LAZY)
+	private List<Character> characters;
+	
 	@Column(updatable=false)
 	private Date createdAt;
 	private Date updatedAt;
@@ -130,5 +133,13 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<Character> getCharacters() {
+		return characters;
+	}
+
+	public void setCharacters(List<Character> characters) {
+		this.characters = characters;
 	}
 }
