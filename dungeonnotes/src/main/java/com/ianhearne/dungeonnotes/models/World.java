@@ -27,9 +27,10 @@ public class World {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	@NotEmpty(message="Name can't be empty.")
 	private String name;
 	
+	@NotEmpty(message="Description can't be empty.")
 	private String description;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

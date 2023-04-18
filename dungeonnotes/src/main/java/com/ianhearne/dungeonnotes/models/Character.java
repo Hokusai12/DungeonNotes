@@ -30,14 +30,14 @@ public class Character {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
-	@Size(min=3)
+	@NotEmpty(message="Name can't be empty.")
+	@Size(min=3, message="Name must be at least 3 characters.")
 	private String name;
 	
-	@NotEmpty
+	@NotEmpty(message="Description can't be empty.")
 	private String description;
 	
-	@NotEmpty
+	@NotEmpty(message="Race can't be empty.")
 	private String race;
 	
 	@OneToMany(mappedBy="character", fetch=FetchType.LAZY, cascade=CascadeType.ALL)

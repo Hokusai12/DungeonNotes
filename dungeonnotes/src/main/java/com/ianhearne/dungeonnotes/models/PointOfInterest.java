@@ -25,10 +25,10 @@ public class PointOfInterest {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty
+	@NotEmpty(message="Name can't be empty.")
 	private String name;
 	
-	@NotEmpty
+	@NotEmpty(message="Description can't be empty.")
 	private String description;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
