@@ -49,7 +49,7 @@
 		<div id="profile-window" class="has-background-grey-light is-hidden" style="position: absolute; right: 40px; top: 50px; padding: 10px;">
 			<ul>
 				<li><a href="/homepage">Homepage</a></li>
-				<li><a>Your Characters</a></li>
+				<li><a href="/user/${user.id}/characters">Your Characters</a></li>
 				<li><a href="/logout">Logout</a></li>
 			</ul>
 		</div>

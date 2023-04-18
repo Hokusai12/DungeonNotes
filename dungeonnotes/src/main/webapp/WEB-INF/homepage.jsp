@@ -18,10 +18,19 @@
 </style>
 
 <script>
+ 	function onBodyClick() {
+		var profileWindow = document.getElementById("profile-window");
+		if(!profileWindow.classList.contains("is-hidden")) {
+			profileWindow.classList.add("is-hidden");
+		}
+	} 
+
 	function avatarButtonClick() {
 		var profileWindow = document.getElementById("profile-window");
 		profileWindow.classList.toggle("is-hidden");
 	}
+	
+	
 </script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -71,7 +80,5 @@
 			</div>
 		</div>
 	</div>
-	
-	<a href="/character/add">Add a character</a>
 </body>
 </html>

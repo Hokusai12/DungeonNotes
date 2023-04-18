@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,7 +58,7 @@
 			<ul>
 				<li><a href="/homepage">Homepage</a></li>
 				<li><a href="/user/${user.id}/worlds">Your Worlds</a></li>
-				<li><a>Your Characters</a></li>
+				<li><a href="/user/${user.id}/characters">Your Characters</a></li>
 				<li><a href="/logout">Logout</a></li>
 			</ul>
 		</div>
@@ -89,10 +88,10 @@
 	 				<c:if test="${world.creator.id == userId}">
 	 					<div class="is-flex is-pulled-right">
 							<a href="/world/${world.id}/edit" class="button has-background-warning has-text-black mr-2">Edit</a>
-							<form:form action="/world/${world.id}/delete" method="POST" onSubmit="onDeleteButtonClick();">
+							<form action="/world/${world.id}/delete" method="POST" onSubmit="onDeleteButtonClick();">
 								<input type="hidden" name="_method" value="DELETE"/>
 								<input type="submit" value="Delete" class="button has-background-danger has-text-white"/>
-							</form:form>
+							</form>
 						</div>
 					</c:if>
 				</div>

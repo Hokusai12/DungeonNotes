@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ianhearne.dungeonnotes.models.PointOfInterest;
+import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.services.PointOfInterestService;
+import com.ianhearne.dungeonnotes.services.UserService;
 
 @Controller
 @RequestMapping("/poi")
@@ -24,6 +26,9 @@ public class PointOfInterestController {
 	
 	@Autowired
 	PointOfInterestService poiService;
+	
+	@Autowired
+	UserService userService;
 	
 	////	GET MAPPINGS    ////
 	
@@ -36,6 +41,9 @@ public class PointOfInterestController {
 			return "redirect:/homepage";
 		}
 		
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		
+		model.addAttribute("user", user);		
 		model.addAttribute("worldId", (Long) session.getAttribute("worldId"));
 		model.addAttribute("newPOI", new PointOfInterest());
 		
@@ -51,7 +59,9 @@ public class PointOfInterestController {
 			return "redirect:/homepage";
 		}
 		
-		model.addAttribute("userId", (Long) session.getAttribute("userId"));
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		
+		model.addAttribute("user", user);
 		model.addAttribute("worldId", (Long) session.getAttribute("worldId"));
 		model.addAttribute("poi", poiService.getById(poiId));
 		
@@ -67,6 +77,7 @@ public class PointOfInterestController {
 			return "redirect:/homepage";
 		}
 		
+		model.addAttribute("user", userService.findById((Long) session.getAttribute("userId")));
 		model.addAttribute("worldId", (Long) session.getAttribute("worldId"));
 		model.addAttribute("poi", poiService.getById(poiId));
 		

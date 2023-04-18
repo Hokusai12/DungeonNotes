@@ -39,4 +39,8 @@ public class CharacterService {
 		return repo.save(character);
 	}
 	
+	public void deleteById(Long id) {
+		repo.deleteById(id);
+	}
+	
 }

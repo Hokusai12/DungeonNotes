@@ -87,12 +87,15 @@ public class WorldController {
 	////	POST MAPPINGS    ////
 	
 	@PostMapping("/add")
-	public String saveCreatedWorld(@Valid @ModelAttribute("newWorld") World newWorld, BindingResult result) {
+	public String saveCreatedWorld(@Valid @ModelAttribute("newWorld") World newWorld, BindingResult result, HttpSession session) {
 		if(result.hasErrors()) {
 			return "world_templates/add_world.jsp";
 		}
+		
+		Long userId = (Long) session.getAttribute("userId");
+		
 		worldService.create(newWorld);
-		return "redirect:/homepage";
+		return "redirect:/user/"+userId+"/worlds";
 	}
 	
 	////	PUT MAPPINGS    ////

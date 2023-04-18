@@ -42,7 +42,7 @@ public class MainController {
 	
 	@GetMapping("/")
 	public String loginAndRegistration(Model model) {
-		return "greet_page.jsp";
+		return "redirect:/register";
 	}
 	
 	@GetMapping("/register")
@@ -137,6 +137,9 @@ public class MainController {
 		if(session.getAttribute("userId") == null) {
 			return "redirect:/logout";
 		}
+		if(!session.getAttribute("userId").equals(id)) {
+			return "redirect:/homepage";
+		}
 		
 		List<World> userWorlds = worldService.getAllByCreatorId(id);
 		User user = userService.findById((Long) session.getAttribute("userId"));
@@ -144,14 +147,23 @@ public class MainController {
 		model.addAttribute("userWorldList", userWorlds);
 		model.addAttribute("user", user);
 		
-		return "user_templates/user_worlds.jsp";
+		return "world_templates/user_worlds.jsp";
 	}
 	
 	@GetMapping("/user/{id}/characters")
 	public String showUserCharacters(@PathVariable(name="id") Long id, Model model, HttpSession session) {
+		if(session.getAttribute("userId") == null) {
+			return "redirect:/logout";
+		}
+		if(!session.getAttribute("userId").equals(id)) {
+			return "redirect:/homepage";
+		}
 		List<Character> userCharacters = characterService.getAllByCreatorId(id);
 		
+		User user = userService.findById((Long) session.getAttribute("userId"));
+		
 		model.addAttribute("characterList", userCharacters);
+		model.addAttribute("user", user);
 		
 		return "character_templates/user_character.jsp";
 	}

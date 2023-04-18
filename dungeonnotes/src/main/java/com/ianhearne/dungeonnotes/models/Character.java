@@ -3,6 +3,7 @@ package com.ianhearne.dungeonnotes.models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,7 @@ public class Character {
 	@NotEmpty
 	private String race;
 	
-	@OneToMany(mappedBy="character", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="character", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<ClassLevels> classLevels;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
