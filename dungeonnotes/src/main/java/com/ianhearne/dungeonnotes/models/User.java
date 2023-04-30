@@ -30,7 +30,7 @@ public class User {
 	
 	@NotEmpty(message="Username is required!")
 	@Size(min=3, max=30, message="Username must be between 3 and 30 characters")
-	private String userName;
+	private String username;
 	
 	@NotEmpty(message="Email is required!")
 	@Email(message="Please enter a valid email!")
@@ -39,6 +39,8 @@ public class User {
 	@NotEmpty(message="Password is required!")
 	@Size(min=8, max=128, message="Password must be between 8 and 128 characters")
 	private String password;
+	
+	private boolean enabled = true;
 	
 	@Transient
 	@NotEmpty(message="Confirm Password is required!")
@@ -71,14 +73,14 @@ public class User {
 	
 	////	GETTERS AND SETTERS    ////
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -89,6 +91,14 @@ public class User {
 
 	public Long getId() {
 		return id;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getPassword() {

@@ -33,7 +33,7 @@
 	
 </script>
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <title>Dungeon Notes</title>
 </head>
 
@@ -50,7 +50,7 @@
 			<div class="navbar-item" style="right:50px">
 				<span class="icon-text" onClick="avatarButtonClick()">
 					<span class="icon is-large"><ion-icon size="large" name="person"></ion-icon></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -74,7 +74,7 @@
 						<p><fmt:formatDate pattern="MMMM dd" type="both" value="${world.createdAt}"/></p>
 					</div>
 						<p class="card-content"><c:out value="${world.description}"/></p>
-						<h3 class="card-footer p-3">Created by: <span class="has-text-danger ml-2"><c:out value="${world.creator.userName}"/></span></h3>
+						<h3 class="card-footer p-3">Created by: <span class="has-text-danger ml-2"><c:out value="${world.creator.username}"/></span></h3>
 					</div>
 				</c:forEach>
 			</div>

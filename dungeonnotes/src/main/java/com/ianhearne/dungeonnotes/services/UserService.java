@@ -9,13 +9,18 @@ import org.springframework.validation.BindingResult;
 
 import com.ianhearne.dungeonnotes.models.LoginUser;
 import com.ianhearne.dungeonnotes.models.User;
+import com.ianhearne.dungeonnotes.models.UserRole;
 import com.ianhearne.dungeonnotes.repositories.UserRepository;
+import com.ianhearne.dungeonnotes.repositories.UserRoleRepository;
 
 @Service
 public class UserService {
 	
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	UserRoleRepository roleRepo;
 	
 	public User register(User newUser, BindingResult result) {
 		////REGISTRATION VALIDATION////
@@ -25,7 +30,7 @@ public class UserService {
 			result.rejectValue("email", "emailInUse", "That email is already in use");
 			isValid = false;
 		}
-		if(!newUser.getUserName().matches("[a-zA-Z]+")) { //Username must be letters only
+		if(!newUser.getUsername().matches("[a-zA-Z]+")) { //Username must be letters only
 			result.rejectValue("userName", "usernameError", "Username must only have letters");
 			isValid = false;
 		}
@@ -36,7 +41,10 @@ public class UserService {
 		if(isValid) {
 			String pwHash = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
 			newUser.setPassword(pwHash);
-			return userRepo.save(newUser);
+			User savedUser = userRepo.save(newUser);
+			UserRole role = new UserRole(savedUser.getEmail(), "ROLE_USER");
+			roleRepo.save(role);
+			return savedUser;
 		} else {
 			return null;
 		}

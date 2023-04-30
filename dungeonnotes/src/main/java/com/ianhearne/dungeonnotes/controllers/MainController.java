@@ -42,7 +42,7 @@ public class MainController {
 	
 	@GetMapping("/")
 	public String loginAndRegistration(Model model) {
-		return "redirect:/register";
+		return "redirect:/homepage";
 	}
 	
 	@GetMapping("/register")
@@ -54,7 +54,14 @@ public class MainController {
 	@GetMapping("/login")
 	public String loginForm(Model model) {
 		model.addAttribute("newLogin", new LoginUser());
+		System.out.println("Here ya go");
 		return "login.jsp";
+	}
+	
+	@PostMapping("/login")
+	public String login() {
+		System.out.println("We're tring her");
+		return "redirect:/homepage";
 	}
 	
 	@PostMapping("/register")
@@ -66,46 +73,20 @@ public class MainController {
 		
 		if(result.hasErrors()) {
 			model.addAttribute("newLogin", new LoginUser());
-			return "/login.jsp";
+			return "/register.jsp";
 		} else {
 			User registeredUser = userService.register(newUser,  result);//Register user, returns null if any exceptions are met
 			if(result.hasErrors()) {
 				model.addAttribute("newLogin", new LoginUser());
-				return "/login.jsp";
+				return "/register.jsp";
 			}
 			session.setAttribute("userId", registeredUser.getId());
 			return "redirect:/homepage";
 		}
-	}
-	
-	@PostMapping("/login")
-	public String loginUser(
-			@Valid @ModelAttribute("newLogin") LoginUser newLogin,
-			BindingResult result,
-			Model model,
-			HttpSession session) {
-		if(result.hasErrors()) {
-			model.addAttribute("newUser", new User());
-			
-			return "/login.jsp";
-		} else {
-			User currentUser = userService.login(newLogin, result);
-			
-			if(result.hasErrors()) {
-				model.addAttribute("newUser", new User());
-				return "/login.jsp";
-			}
-			session.setAttribute("userId", currentUser.getId());
-			return "redirect:/homepage";
-		}
-	}
-	
+	}	
 	
 	@GetMapping("/homepage")
 	public String showHomepage(Model model, HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
 		if(session.getAttribute("worldId") != null) {
 			session.removeAttribute("worldId");
 		}

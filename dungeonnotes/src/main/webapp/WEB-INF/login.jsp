@@ -6,6 +6,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="_csrf" content="${_csrf.token}"/>
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 <title>Dungeon Notes</title>
@@ -17,23 +20,31 @@
 	<div class="columns is-centered">
 		<div class="column is-3">
 			<h3 class="title has-text-centered has-text-grey-light">Login User</h3>
-			<form:form action="/login" method="POST" modelAttribute="newLogin">
+			<c:if test="${param['error'] != null}">
+				<p class="has-text-danger">Invalid Login</p>
+			</c:if>
+			<c:if test="${param['logout'] != null}">
+				<p class="has-text-sucess">Logout successful</p>
+			</c:if>
+			<form action="/login" method="POST">
+				<input type="hidden"
+					name="${_csrf.parameterName}"
+					value="${_csrf.token}"/>
 				<div class="field">
-					<form:errors class="has-text-danger" path="email"/>
-					<form:label path="email" class="label has-text-grey-light">Email</form:label>
+					<label for="username" class="label has-text-grey-light">Email</label>
 					<div class="control">
-						<form:input path="email" type="email" class="input"/>
+						<input name="username" type="text" class="input"/>
 					</div>
 				</div>
 				<div class="field">
-					<form:label path="password" class="label has-text-grey-light">Password</form:label>
+					<label for="password" class="label has-text-grey-light">Password</label>
 					<div class="control">
-						<form:input path="password" type="password" class="input"/>
+						<input name="password" type="password" class="input"/>
 					</div>
 				</div>
-				<a href="/register">Register New Account</a>
 				<input class="button is-dark has-text-warning is-pulled-right" type="submit" value="Login"/>
-			</form:form>
+			</form>
+			<a href="/register">Register New Account</a>
 		</div>
 	</div>
 </body>

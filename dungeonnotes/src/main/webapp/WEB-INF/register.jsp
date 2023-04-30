@@ -7,7 +7,7 @@
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-<title>Insert title here</title>
+<title>Dungeon Notes</title>
 </head>
 <body class="has-background-grey-dark" style="min-height: 100vh;">
 	<div class="has-text-centered p-6">
@@ -18,10 +18,10 @@
 			<h3 class="title has-text-centered has-text-grey-light">Register New User</h3>
 			<form:form action="/register" method="POST" modelAttribute="newUser">
 				<div class="field">
-					<form:errors class="has-text-danger" path="userName"/>
-					<form:label path="userName" class="label has-text-grey-light">User Name</form:label>
+					<form:errors class="has-text-danger" path="username"/>
+					<form:label path="username" class="label has-text-grey-light">User Name</form:label>
 					<div class="control">
-						<form:input class="input" path="userName" type="text"/>
+						<form:input class="input" path="username" type="text"/>
 					</div>
 				</div>
 				<div class="field">
