@@ -17,12 +17,6 @@
 	}
 </style>
 
-<script>
-	function avatarButtonClick() {
-		var profileWindow = document.getElementById("profile-window");
-		profileWindow.classList.toggle("is-hidden");
-	}
-</script>
 
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -39,9 +33,9 @@
 		</div>
 		<div class="navbar-end">
 			<div class="navbar-item" style="right:50px">
-				<span class="icon-text" onClick="avatarButtonClick()">
+				<span class="icon-text" id="avatar-username">
 					<span class="icon is-large"><ion-icon size="large" name="person"></ion-icon></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -77,5 +71,6 @@
 			</form:form>
 		</div>
 	</div>
+	<script type="text/javascript" src="<c:url value="/js/events.js"/>"></script>
 </body>
 </html>

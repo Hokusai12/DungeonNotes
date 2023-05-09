@@ -16,22 +16,6 @@
 	}
 </style>
 
-<script>
-	function avatarButtonClick() {
-		var profileWindow = document.getElementById("profile-window");
-		profileWindow.classList.toggle("is-hidden");
-	}
-	
-	
-	function onDeleteButtonClick() {
-		const response = confirm(`You are about to delete one of your characters. This action can't be undone. \nDo you want to continue?`, );
-		if(response == false) {
-			event.preventDefault();
-		}
-		return response;
-	}
-</script>
-
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
@@ -48,9 +32,9 @@
 		</div>
 		<div class="navbar-end">
 			<div class="navbar-item" style="right:50px">
-				<span class="icon-text" onClick="avatarButtonClick()">
+				<span class="icon-text" id="avatar-username">
 					<span class="icon is-large"><ion-icon size="large" name="person"></ion-icon></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -84,7 +68,10 @@
 						<c:out value="${character.description}"/>
 						<div>
 							<div class="is-flex is-pulled-right">
-								<form action="/character/${character.id}/delete" method="POST" onSubmit="onDeleteButtonClick();">
+								<form action="/character/${character.id}/delete" method="POST" class="delete-form" id="character-delete">
+									<input type="hidden"
+										name="${_csrf.parameterName}"
+										value="${_csrf.token}"/>
 									<input type="hidden" name="_method" value="DELETE"/>
 									<input type="submit" value="Delete" class="button has-background-danger has-text-white"/>
 								</form>
@@ -95,5 +82,6 @@
 			</c:forEach>
 		</div>
 	</div>
+	<script type="text/javascript" src="<c:url value="/js/events.js"/>"></script>
 </body>
 </html>

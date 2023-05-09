@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.ianhearne.dungeonnotes.models.LoginUser;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.UserRole;
 import com.ianhearne.dungeonnotes.repositories.UserRepository;
@@ -39,6 +38,7 @@ public class UserService {
 			isValid = false;
 		}
 		if(isValid) {
+			System.out.println(newUser.getPassword());
 			String pwHash = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
 			newUser.setPassword(pwHash);
 			User savedUser = userRepo.save(newUser);
@@ -49,25 +49,19 @@ public class UserService {
 			return null;
 		}
 	}
-
-	public User login(LoginUser newLoginObject, BindingResult result) {
-		Optional<User> checkUser = userRepo.findByEmail(newLoginObject.getEmail());
-		if(!checkUser.isPresent()) {
-			result.rejectValue("email", "", "Invalid Login");
-			return null;
-		}
-		User user = checkUser.get();
-		if(!BCrypt.checkpw(newLoginObject.getPassword(), user.getPassword())) {
-			result.rejectValue("email", "", "Invalid Login");
-			return null;
-		}
-		return user;
-	}
 	
 	public User findById(Long id) {
 		Optional<User> optionalUser = userRepo.findById(id);
 		if(optionalUser.isPresent()) {
 			return optionalUser.get();
+		}
+		return null;
+	}
+	
+	public User findByEmail(String email) {
+		Optional<User> user = userRepo.findByEmail(email);
+		if(user.isPresent()) {
+			return user.get();
 		}
 		return null;
 	}

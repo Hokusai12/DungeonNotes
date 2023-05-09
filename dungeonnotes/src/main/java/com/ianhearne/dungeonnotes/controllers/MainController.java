@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.ianhearne.dungeonnotes.models.LoginUser;
+import com.ianhearne.dungeonnotes.models.Character;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.World;
-import com.ianhearne.dungeonnotes.models.Character;
 import com.ianhearne.dungeonnotes.services.CharacterService;
 import com.ianhearne.dungeonnotes.services.UserService;
 import com.ianhearne.dungeonnotes.services.WorldService;
@@ -41,7 +42,17 @@ public class MainController {
 	*****/
 	
 	@GetMapping("/")
-	public String loginAndRegistration(Model model) {
+	public String loginAndRegistration() {
+		return "greet_page.jsp";
+	}
+	
+	@GetMapping("/login")
+	public String loginForm() {
+		return "login.jsp";
+	}
+	
+	@PostMapping("/login")
+	public String login() {
 		return "redirect:/homepage";
 	}
 	
@@ -50,20 +61,7 @@ public class MainController {
 		model.addAttribute("newUser", new User());
 		return "register.jsp";
 	}
-	
-	@GetMapping("/login")
-	public String loginForm(Model model) {
-		model.addAttribute("newLogin", new LoginUser());
-		System.out.println("Here ya go");
-		return "login.jsp";
-	}
-	
-	@PostMapping("/login")
-	public String login() {
-		System.out.println("We're tring her");
-		return "redirect:/homepage";
-	}
-	
+
 	@PostMapping("/register")
 	public String registerNewUser(
 			@Valid @ModelAttribute("newUser") User newUser,
@@ -72,27 +70,29 @@ public class MainController {
 			HttpSession session) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute("newLogin", new LoginUser());
 			return "/register.jsp";
 		} else {
-			User registeredUser = userService.register(newUser,  result);//Register user, returns null if any exceptions are met
+			User registeredUser = userService.register(newUser,  result);
 			if(result.hasErrors()) {
-				model.addAttribute("newLogin", new LoginUser());
 				return "/register.jsp";
 			}
-			session.setAttribute("userId", registeredUser.getId());
 			return "redirect:/homepage";
 		}
 	}	
 	
 	@GetMapping("/homepage")
 	public String showHomepage(Model model, HttpSession session) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String name = authentication.getName();
+		User user = userService.findByEmail(name);
 		if(session.getAttribute("worldId") != null) {
 			session.removeAttribute("worldId");
 		}
+		if(session.getAttribute("userId") == null) {
+			session.setAttribute("userId", user.getId());
+		}
 		
 		List<World> allWorlds = worldService.getAllSortedByDate();
-		User user = userService.findById((Long) session.getAttribute("userId"));
 		
 		model.addAttribute("user", user);
 		model.addAttribute("worldList", allWorlds);

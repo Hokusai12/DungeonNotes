@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -22,22 +23,29 @@ public class WebSecurityConfig {
 			auth.jdbcAuthentication()
 				.dataSource(dataSource)
 				.usersByUsernameQuery("select email, password, enabled from users where email=?")
-				.authoritiesByUsernameQuery("select email, authority from authorities where email=?");
+				.authoritiesByUsernameQuery("select email, authority from authorities where email=?")
+				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		
 		http
 			.authorizeHttpRequests((requests) -> requests
-					.antMatchers("/", "/register").permitAll()
+					.antMatchers("/js/**", "/css/**").permitAll()
+					.mvcMatchers("/", "/register").permitAll()
 					.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form
 					.loginPage("/login")
+					.loginProcessingUrl("/login")
+					.defaultSuccessUrl("/homepage")
 					.permitAll()
 			)
-			.logout((logout) -> logout.permitAll());
+			.logout((logout) -> 
+				logout.permitAll()
+			);
 		
 		return http.build();
-	}	
+	}
 }

@@ -17,33 +17,6 @@
 	}
 </style>
 
-<script>
-	var classCount = 1;
-
-	function avatarButtonClick() {
-		var profileWindow = document.getElementById("profile-window");
-		profileWindow.classList.toggle("is-hidden");
-	}
-	
-	
-	function onDeleteButtonClick() {
-		const response = confirm(`You are about to delete one of your worlds.
-			This action can't be undone. Continue?`, );
-		if(response == false) {
-			event.preventDefault();
-		}
-		return response;
-	}
-	
-	function onAddClassBtnClick() {
-		var classSelectDiv = document.querySelector(".class-select-".concat(classCount.toString()));
-		classCount++;
-		var divHTML = "<div class='field class-select-".concat(classCount.toString()) + "'><select class='select' name='" + "dnd-class-".concat(classCount.toString()) + "'><c:forEach var='dnd_class' items='${classList}'><option value='${dnd_class.id}'><c:out value='${dnd_class.name}'/></option></c:forEach></select><label for='" + "class-levels-".concat(classCount.toString()) + "'>Levels: </label><input name='" + "class-levels-".concat(classCount.toString()) + "' type='number'/></div>";
-		
-		classSelectDiv.insertAdjacentHTML("afterend", divHTML);
-	}
-</script>
-
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <title>Dungeon Notes</title>
@@ -59,9 +32,9 @@
 		</div>
 		<div class="navbar-end">
 			<div class="navbar-item" style="right:50px">
-				<span class="icon-text" onClick="avatarButtonClick()">
+				<span class="icon-text" id="avatar-username">
 					<span class="icon is-large"><ion-icon size="large" name="person"/></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -111,8 +84,25 @@
 				<input class="button is-dark has-text-warning is-pulled-right" type="submit" value="Create Character"/>
 			</form:form>
 			
-			<button class="button is-dark has-text-danger" onClick="onAddClassBtnClick()">Add another Class</button>
+			<button class="button is-dark has-text-danger" id="add-class-btn">Add another Class</button>
 		</div>
 	</div> 
+	<script type="text/javascript" src="<c:url value="/js/events.js"/>"></script>	
+	
+	<script type="text/javascript">
+		var classCount = 1;
+		var addClassBtn = document.querySelector("#add-class-btn");
+		
+		if(addClassBtn)
+			addClassBtn.addEventListener("click", onAddClassBtnClick);
+
+		function onAddClassBtnClick() {
+			var classSelectDiv = document.querySelector(".class-select-".concat(classCount.toString()));
+			classCount++;
+			let divHTML = "<div class='field class-select-".concat(classCount.toString()) + "'><select class='select' name='" + "dnd-class-".concat(classCount.toString()) + "'><c:forEach var='dnd_class' items='${classList}'><option value='${dnd_class.id}'><c:out value='${dnd_class.name}'/></option></c:forEach></select><label for='" + "class-levels-".concat(classCount.toString()) + "'>Levels: </label><input name='" + "class-levels-".concat(classCount.toString()) + "' type='number'/></div>";
+			
+			classSelectDiv.insertAdjacentHTML("afterend", divHTML);
+		}
+	</script>
 </body>
 </html>

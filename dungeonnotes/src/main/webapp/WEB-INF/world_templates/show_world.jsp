@@ -16,23 +16,6 @@
 	}
 </style>
 
-<script>
-	function avatarButtonClick() {
-		var profileWindow = document.getElementById("profile-window");
-		profileWindow.classList.toggle("is-hidden");
-	}
-	
-	
-	function onDeleteButtonClick() {
-		const response = confirm(`You are about to delete one of your worlds.
-			This action can't be undone. Continue?`, );
-		if(response == false) {
-			event.preventDefault();
-		}
-		return response;
-	}
-</script>
-
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 <title>Dungeon Notes</title>
@@ -48,9 +31,9 @@
 		</div>
 		<div class="navbar-end">
 			<div class="navbar-item" style="right:50px">
-				<span class="icon-text" onClick="avatarButtonClick()">
+				<span class="icon-text" id="avatar-username">
 					<span class="icon is-large"><ion-icon size="large" name="person"/></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -68,7 +51,7 @@
 			<div class="card has-background-grey-light">
 				<div class="card-header p-3 has-background-white is-flex is-justify-content-space-between is-align-items-center">
 					<h3 class="is-size-2 has-text-danger">${world.name}</h3>
-					<h3 class="is-size-5 has-text-grey">Created By: <span class="has-text-danger"><c:out value="${world.creator.userName}"/></span></h3>
+					<h3 class="is-size-5 has-text-grey">Created By: <span class="has-text-danger"><c:out value="${world.creator.username}"/></span></h3>
 				</div>
 				<div class="card-content ml-6 p-6">
 					<p class="is-size-5 my-5 has-text-black">${world.description}</p>
@@ -88,8 +71,11 @@
 	 				<c:if test="${world.creator.id == userId}">
 	 					<div class="is-flex is-pulled-right">
 							<a href="/world/${world.id}/edit" class="button has-background-warning has-text-black mr-2">Edit</a>
-							<form action="/world/${world.id}/delete" method="POST" onSubmit="onDeleteButtonClick();">
+							<form action="/world/${world.id}/delete" method="POST" id="world-delete" class="delete-form">
 								<input type="hidden" name="_method" value="DELETE"/>
+								<input type="hidden"
+									name="${_csrf.parameterName}"
+									value="${_csrf.token}"/>
 								<input type="submit" value="Delete" class="button has-background-danger has-text-white"/>
 							</form>
 						</div>
@@ -98,5 +84,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<script type="text/javascript" src="<c:url value="/js/events.js" />"></script>
 </body>
 </html>

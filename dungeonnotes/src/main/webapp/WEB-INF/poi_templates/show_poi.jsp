@@ -16,23 +16,6 @@
 	}
 </style>
 
-<script>
-	function avatarButtonClick() {
-		var profileWindow = document.getElementById("profile-window");
-		profileWindow.classList.toggle("is-hidden");
-	}
-	
-	
-	function onDeleteButtonClick() {
-		const response = confirm(`You are about to delete one of your worlds.
-			This action can't be undone. Continue?`, );
-		if(response == false) {
-			event.preventDefault();
-		}
-		return response;
-	}
-</script>
-
 <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
@@ -49,9 +32,9 @@
 		</div>
 		<div class="navbar-end">
 			<div class="navbar-item" style="right:50px">
-				<span class="icon-text" onClick="avatarButtonClick()">
+				<span class="icon-text" id="avatar-username">
 					<span class="icon is-large"><ion-icon size="large" name="person"></ion-icon></span>
-					<span id="username" class="has-text-warning"><c:out value="${user.userName}"/></span>
+					<span id="username" class="has-text-warning"><c:out value="${user.username}"/></span>
 				</span>
 			</div>
 		</div>
@@ -75,19 +58,23 @@
 					
 					<div class="controls is-flex is-justify-content-space-between">						
 						<a href="/world/${worldId}">Go back</a>
-							<c:if test="${poi.hostWorld.creator.id == userId}">
-								<div class="creator-controls is-flex">
-									<a class="button is-warning mr-2" href="/poi/${poi.id}/edit">Edit</a>
-									<form action="/poi/${poi.id}/delete" method="POST">
-										<input type="hidden" name="_method" value="DELETE"/>
-										<input class="button is-danger" type="submit" value="Delete"/>	
-									</form>
-								</div>
-							</c:if>
+						<c:if test="${poi.hostWorld.creator.id == userId}">
+							<div class="creator-controls is-flex">
+								<a class="button is-warning mr-2" href="/poi/${poi.id}/edit">Edit</a>
+								<form action="/poi/${poi.id}/delete" method="POST" class="delete-form" id="poi-delete">
+									<input type="hidden"
+										name="${_csrf.parameterName}"
+										value="${_csrf.token}"/>
+									<input type="hidden" name="_method" value="DELETE"/>
+									<input class="button is-danger" type="submit" value="Delete"/>	
+								</form>
+							</div>
+						</c:if>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<script  type="text/javascript" src="<c:url value="/js/events.js"/>"></script>
 </body>
 </html>
