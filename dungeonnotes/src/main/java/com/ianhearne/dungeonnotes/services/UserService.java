@@ -1,5 +1,6 @@
 package com.ianhearne.dungeonnotes.services;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.UserRole;
 import com.ianhearne.dungeonnotes.repositories.UserRepository;
-import com.ianhearne.dungeonnotes.repositories.UserRoleRepository;
 
 @Service
 public class UserService {
@@ -19,7 +19,7 @@ public class UserService {
 	UserRepository userRepo;
 	
 	@Autowired
-	UserRoleRepository roleRepo;
+	UserDetailsService userDetails;
 	
 	public User register(User newUser, BindingResult result) {
 		////REGISTRATION VALIDATION////
@@ -38,12 +38,11 @@ public class UserService {
 			isValid = false;
 		}
 		if(isValid) {
-			System.out.println(newUser.getPassword());
 			String pwHash = BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
 			newUser.setPassword(pwHash);
+			UserRole userRole = userDetails.findById(1L);
+			newUser.setRoles(Arrays.asList(userRole));
 			User savedUser = userRepo.save(newUser);
-			UserRole role = new UserRole(savedUser.getEmail(), "ROLE_USER");
-			roleRepo.save(role);
 			return savedUser;
 		} else {
 			return null;

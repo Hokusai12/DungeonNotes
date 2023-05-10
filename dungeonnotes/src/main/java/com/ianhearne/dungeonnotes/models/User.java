@@ -9,6 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -52,6 +55,12 @@ public class User {
 	
 	@OneToMany(mappedBy="creator", fetch=FetchType.LAZY)
 	private List<Character> characters;
+	
+	@ManyToMany
+	@JoinTable(name="user_roles",
+		joinColumns=@JoinColumn(name="user_id"),
+		inverseJoinColumns = @JoinColumn(name="role_id"))
+	private List<UserRole> roles;
 	
 	@Column(updatable=false)
 	private Date createdAt;
@@ -151,5 +160,13 @@ public class User {
 
 	public void setCharacters(List<Character> characters) {
 		this.characters = characters;
+	}
+
+	public List<UserRole> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<UserRole> roles) {
+		this.roles = roles;
 	}
 }

@@ -1,9 +1,13 @@
 package com.ianhearne.dungeonnotes.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -14,14 +18,16 @@ public class UserRole {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private String email;
+	@ManyToMany(mappedBy="roles")
+	private List<User> users;
 	
 	private String authority;
 	
 	public UserRole() {}
 	
-	public UserRole(String email, String role) { 
-		this.email = email; 
+	public UserRole(User user, String role) { 
+		this.users = new ArrayList<User>();
+		this.users.add(user);
 		this.authority = role; 
 	}
 
@@ -32,12 +38,13 @@ public class UserRole {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getEmail() {
-		return email;
+
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public String getAuthority() {

@@ -23,7 +23,7 @@ public class WebSecurityConfig {
 			auth.jdbcAuthentication()
 				.dataSource(dataSource)
 				.usersByUsernameQuery("select email, password, enabled from users where email=?")
-				.authoritiesByUsernameQuery("select email, authority from authorities where email=?")
+				.authoritiesByUsernameQuery("select users.email, authorities.authority from user_roles join users on users.id = user_roles.user_id join authorities on authorities.id = user_roles.role_id where users.email=?")
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
