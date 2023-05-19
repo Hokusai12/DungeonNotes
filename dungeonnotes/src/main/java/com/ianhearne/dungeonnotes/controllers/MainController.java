@@ -106,6 +106,11 @@ public class MainController {
 		return "redirect:/login";
 	}
 	
+	@GetMapping("/dungeonmaker")
+	public String dungeonMaker() {
+		return "dungeonmaker.jsp";
+	}
+	
 	/*****
 	 * 
 	 *			User-specific routes

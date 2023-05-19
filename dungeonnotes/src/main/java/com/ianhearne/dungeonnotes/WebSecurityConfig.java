@@ -33,7 +33,7 @@ public class WebSecurityConfig {
 		http
 			.authorizeHttpRequests((requests) -> requests
 					.antMatchers("/js/**", "/css/**").permitAll()
-					.mvcMatchers("/", "/register").permitAll()
+					.mvcMatchers("/", "/register", "/dungeonmaker").permitAll()
 					.anyRequest().authenticated()
 			)
 			.formLogin((form) -> form

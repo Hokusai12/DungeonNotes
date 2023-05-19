@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+#dungeon-window {
+	width: 60vw;
+	height: 80vh;
+	background-color: white;
+	overflow: scroll;
+	
+	margin: 20px;
+	padding: 2px;
+}
+
+#tile-map {
+	display: grid;
+	grid-template-columns: auto;
+	justify-content: start;
+}
+
+.tile {
+	background-color: black;
+}
