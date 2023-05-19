@@ -193,13 +193,6 @@ class Tool {
 		var selectedTiles;
 		
 		if(this.selectedTile != null){
-			
-			if(this.toolType == "SINGLE") {
-				Tool.useSingleTool(lastTile);
-				return null;
-			}
-			
-			
 			let x1 = this.selectedTile.xpos;
 			let y1 = this.selectedTile.ypos;
 			let x2 = lastTile.xpos;
@@ -224,8 +217,13 @@ class Tool {
 			}
 			return selectedTiles;
 		} else {
-			this.isHighlight = true;
-			this.selectedTile = lastTile;
+			if(this.toolType == "SINGLE") {
+				Tool.useSingleTool(lastTile);
+			} else {
+				this.isHighlight = true;
+				this.selectedTile = lastTile;
+			}
+			
 			return null;
 		}
 	}
