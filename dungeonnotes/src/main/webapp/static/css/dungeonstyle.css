@@ -9,16 +9,19 @@
 	width: 60vw;
 	height: 80vh;
 	background-color: white;
-	overflow: scroll;
+	overflow: hidden;
+	
+	border: 2px solid blue;
 	
 	margin: 20px;
-	padding: 2px;
 }
 
 #tile-map {
 	display: grid;
 	grid-template-columns: auto;
 	justify-content: start;
+	
+	position:relative;
 }
 
 .tile {

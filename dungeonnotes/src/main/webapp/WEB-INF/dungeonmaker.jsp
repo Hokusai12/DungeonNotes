@@ -19,7 +19,10 @@
 		<option value="FILL">Fill</option>
 		<option value="OUTLINE">Outline</option>
 		<option value="LINE">Line</option>
+		<option value="SINGLE">Single</option>
 	</select>
+	Erase
+	<input type="checkbox" name="erase" id="erase-checkbox" value="1"/>
 	
 	<script type="text/javascript" src="/js/dungeonmaker.js"></script>
 </body>

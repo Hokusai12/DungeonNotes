@@ -1,3 +1,7 @@
+/*
+		DATA STRUCTURES
+*/
+
 class Tile {
 	xpos;
 	ypos;
@@ -18,9 +22,6 @@ class Tile {
 		tileDiv.classList.add("tile");
 		tileDiv.style.width = width.toString().concat("px");
 		tileDiv.style.height = height.toString().concat("px");
-			
-		tileDiv.setAttribute("xpos", xpos);
-		tileDiv.setAttribute("ypos", ypos);
 			
 		tileDiv.addEventListener("click", onTileClick);
 		tileDiv.addEventListener("dblclick", clearTile);
@@ -63,6 +64,15 @@ class TileMap {
 	static tileArr = new Array();
 	static tileMap = document.getElementById("tile-map");
 	static zoom;
+	static backgroundColor = "#000000";
+	static xDim = 100;
+	static yDim = 50;
+	static minX;
+	static minY;
+	
+	static xPos = 0;
+	static yPos = 0;
+	static isPanning = false;
 	
 	#zoomInput;
 	
@@ -70,6 +80,9 @@ class TileMap {
 		this.zoomInput = document.getElementById("zoom-input");
 		this.zoomInput.addEventListener("change", onZoomChange);
 		this.zoom = Number(this.zoomInput.value);
+		
+		this.minX = (window.innerWidth * .6) - (this.xDim * 20 * this.zoom);
+		this.minY = (window.innerHeight * .8) - (this.yDim * 20 * this.zoom);
 	}
 	
 	
@@ -91,6 +104,9 @@ class TileMap {
 		for(var i = 0; i < TileMap.tileArr.length; i++) {
 			this.tileArr[i].zoomUpdate(this.zoom);
 		}
+		this.minX = (window.innerWidth * .6) - (this.xDim * 20 * this.zoom);
+		this.minY = (window.innerHeight * .8) - (this.yDim * 20 * this.zoom);
+		this.pan(0, 0); 
 	}
 	
 	static clearHighlights() {
@@ -98,22 +114,62 @@ class TileMap {
 			this.tileArr[i].unhighlight();
 		}
 	}
+	
+	static pan(dx, dy) {
+		this.xPos += dx;
+		this.yPos += dy;
+		
+		//Please for the love of christ fix this later
+		
+		if((this.xDim * 20 * this.zoom) > window.innerWidth * .6 && (this.yDim * 20 * this.zoom) > window.innerHeight * .8) {
+			if(this.xPos <= 0 && this.xPos >= this.minX) {
+				this.tileMap.style.left = this.xPos.toString().concat("px");
+			} else {
+				this.xPos = (this.xPos > 0) ? 0 : this.minX;
+				this.tileMap.style.left = this.xPos.toString().concat("px");
+			}
+			if(this.yPos <= 0 && this.yPos >= this.minY) {
+				this.tileMap.style.top = this.yPos.toString().concat("px");
+			} else {
+				this.yPos = (this.yPos > 0) ? 0 : this.minY;
+				this.tileMap.style.top = this.yPos.toString().concat("px");
+			}
+		} else if((this.xDim * 20 * this.zoom) < window.innerWidth * .6 && (this.yDim * 20 * this.zoom) > window.innerHeight * .8) {
+			if(this.yPos <= 0 && this.yPos >= this.minY) {
+				this.tileMap.style.top = this.yPos.toString().concat("px");
+			} else {
+				this.yPos = (this.yPos > 0) ? 0 : this.minY;
+				this.tileMap.style.top = this.yPos.toString().concat("px");
+			}
+		} else if((this.yDim * 20 * this.zoom) < window.innerHeight * .8 && (this.xDim * 20 * this.zoom) > window.innerWidth * .6) {
+			if(this.xPos <= 0 && this.xPos >= this.minX) {
+				this.tileMap.style.left = this.xPos.toString().concat("px");
+			} else {
+				this.xPos = (this.xPos > 0) ? 0 : this.minX;
+				this.tileMap.style.left = this.xPos.toString().concat("px");
+			}
+		}
+	}
 }
 
 class Tool {
 	static toolType = "FILL";
 	static currentColor = "#ff0000";
+	static isErase = false;
 	static selectedTile;
 	static isHighlight = false;
 	
 	#toolInput;
 	#colorInput;
+	#eraseCheckbox;
 	
 	static init() {
 		this.toolInput = document.getElementById("tool-select");
 		this.colorInput = document.getElementById("color-input");
+		this.eraseCheckbox = document.getElementById("erase-checkbox");
 		this.toolInput.addEventListener("change", updateTool);
 		this.colorInput.addEventListener("change", onColorChange);
+		this.eraseCheckbox.addEventListener("change", updateEraseTool);
 		
 		this.colorInput.value = "#ff0000";
 	}
@@ -184,10 +240,6 @@ class Tool {
 		return selectedTiles;
 	}
 	
-	static useSingleTool(tile) {
-		tile.setBackgroundColor(this.currentColor);
-	}
-	
 	static selectTiles(lastTile, isPreview = false) {
 		
 		var selectedTiles;
@@ -218,7 +270,7 @@ class Tool {
 			return selectedTiles;
 		} else {
 			if(this.toolType == "SINGLE") {
-				Tool.useSingleTool(lastTile);
+				return new Array(lastTile);
 			} else {
 				this.isHighlight = true;
 				this.selectedTile = lastTile;
@@ -230,14 +282,19 @@ class Tool {
 	
 	static applyTool(tileList) {
 		for(var i = 0; i < tileList.length; i++) {
-			tileList[i].setBackgroundColor(this.currentColor);
+			if(this.isErase) {
+				tileList[i].setBackgroundColor(TileMap.backgroundColor);
+			} else {
+				tileList[i].setBackgroundColor(this.currentColor);
+			}
 		}
 	}
 
 }
 
-window.addEventListener("load", onDungeonWindowLoad(100, 50));
-
+/*
+		EVENT FUNCTIONS
+*/
 
 function onDungeonWindowLoad(width, height) {
 	TileMap.init();
@@ -259,6 +316,10 @@ function onDungeonWindowLoad(width, height) {
 	Tool.init();
 }
 
+function updateEraseTool(event) {
+	Tool.isErase = event.target.checked;
+}
+
 function onColorChange(event) {
 	Tool.currentColor = event.target.value;
 }
@@ -271,11 +332,19 @@ function highlightTile(event) {
 	var tile = TileMap.getTileObject(event.target);
 	
 	if(!Tool.isHighlight) {
-		tile.highlight();
+		if(Tool.isErase) {
+			tile.highlight(TileMap.backgroundColor);
+		} else {
+			tile.highlight();
+		}
 	} else {
 		var tileList = Tool.selectTiles(tile, true);
 		for(var i = 0; i < tileList.length; i++) {
-			tileList[i].highlight(Tool.currentColor);
+			if(Tool.isErase) {
+				tileList[i].highlight(TileMap.backgroundColor);
+			} else {
+				tileList[i].highlight(Tool.currentColor);
+			}
 		}
 	}
 }
@@ -289,7 +358,7 @@ function unhighlightTile(event) {
 
 function clearTile(event) {
 	var tile = event.target;
-	tile.style.backgroundColor = "black";
+	tile.setBackgroundColor(TileMap.backgroundColor);
 }
 
 function onTileClick(event) {
@@ -305,3 +374,33 @@ function onTileClick(event) {
 function onZoomChange(event) {
 	TileMap.updateTileZoom(Number(event.target.value));
 }
+
+function onTileMapClick(event) {
+	event.preventDefault();
+	if(event.button == 1) {
+		TileMap.isPanning = true;
+	}
+}
+
+function onTileMapMouseMove(event) {
+	if(TileMap.isPanning) {		
+		TileMap.pan(event.movementX, event.movementY);
+	}
+}
+
+
+function onTileMapMouseUp() {
+	TileMap.isPanning = false;
+}
+
+/*
+		GLOBAL CODE
+*/
+
+window.addEventListener("load", function() { onDungeonWindowLoad(100, 50); });
+var dungeonWindow = document.getElementById("dungeon-window");
+
+
+dungeonWindow.addEventListener("mousedown", onTileMapClick);
+dungeonWindow.addEventListener("mouseup", onTileMapMouseUp);
+dungeonWindow.addEventListener("mousemove", onTileMapMouseMove);
