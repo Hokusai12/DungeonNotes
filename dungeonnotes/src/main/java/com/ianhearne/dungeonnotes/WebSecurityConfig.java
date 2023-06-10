@@ -32,7 +32,7 @@ public class WebSecurityConfig {
 		
 		http
 			.authorizeHttpRequests((requests) -> requests
-					.antMatchers("/js/**", "/css/**").permitAll()
+					.antMatchers("/js/**", "/css/**", "/imgs/**").permitAll()
 					.mvcMatchers("/", "/register", "/dungeonmaker").permitAll()
 					.anyRequest().authenticated()
 			)

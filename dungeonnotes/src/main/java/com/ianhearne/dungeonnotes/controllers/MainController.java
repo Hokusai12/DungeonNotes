@@ -42,8 +42,8 @@ public class MainController {
 	*****/
 	
 	@GetMapping("/")
-	public String loginAndRegistration() {
-		return "greet_page.jsp";
+	public String landingPage() {
+		return "landing_page.jsp";
 	}
 	
 	@GetMapping("/login")

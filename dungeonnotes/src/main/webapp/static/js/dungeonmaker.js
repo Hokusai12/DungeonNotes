@@ -121,31 +121,31 @@ class TileMap {
 		
 		//Please for the love of christ fix this later
 		
-		if((this.xDim * 20 * this.zoom) > window.innerWidth * .6 && (this.yDim * 20 * this.zoom) > window.innerHeight * .8) {
+		if((this.xDim * 20 * this.zoom) >= window.innerWidth * .6 && (this.yDim * 20 * this.zoom) >= window.innerHeight * .8) {
 			if(this.xPos <= 0 && this.xPos >= this.minX) {
 				this.tileMap.style.left = this.xPos.toString().concat("px");
 			} else {
-				this.xPos = (this.xPos > 0) ? 0 : this.minX;
+				this.xPos = (this.xPos >= 0) ? 0 : this.minX;
 				this.tileMap.style.left = this.xPos.toString().concat("px");
 			}
 			if(this.yPos <= 0 && this.yPos >= this.minY) {
 				this.tileMap.style.top = this.yPos.toString().concat("px");
 			} else {
-				this.yPos = (this.yPos > 0) ? 0 : this.minY;
+				this.yPos = (this.yPos >= 0) ? 0 : this.minY;
 				this.tileMap.style.top = this.yPos.toString().concat("px");
 			}
-		} else if((this.xDim * 20 * this.zoom) < window.innerWidth * .6 && (this.yDim * 20 * this.zoom) > window.innerHeight * .8) {
+		} else if((this.xDim * 20 * this.zoom) <= window.innerWidth * .6 && (this.yDim * 20 * this.zoom) >= window.innerHeight * .8) {
 			if(this.yPos <= 0 && this.yPos >= this.minY) {
 				this.tileMap.style.top = this.yPos.toString().concat("px");
 			} else {
-				this.yPos = (this.yPos > 0) ? 0 : this.minY;
+				this.yPos = (this.yPos >= 0) ? 0 : this.minY;
 				this.tileMap.style.top = this.yPos.toString().concat("px");
 			}
-		} else if((this.yDim * 20 * this.zoom) < window.innerHeight * .8 && (this.xDim * 20 * this.zoom) > window.innerWidth * .6) {
+		} else if((this.yDim * 20 * this.zoom) <= window.innerHeight * .8 && (this.xDim * 20 * this.zoom) >= window.innerWidth * .6) {
 			if(this.xPos <= 0 && this.xPos >= this.minX) {
 				this.tileMap.style.left = this.xPos.toString().concat("px");
 			} else {
-				this.xPos = (this.xPos > 0) ? 0 : this.minX;
+				this.xPos = (this.xPos >= 0) ? 0 : this.minX;
 				this.tileMap.style.left = this.xPos.toString().concat("px");
 			}
 		}
@@ -357,7 +357,7 @@ function unhighlightTile(event) {
 
 
 function clearTile(event) {
-	var tile = event.target;
+	var tile = TileMap.getTileObject(event.target);
 	tile.setBackgroundColor(TileMap.backgroundColor);
 }
 
@@ -398,6 +398,7 @@ function onTileMapMouseUp() {
 */
 
 window.addEventListener("load", function() { onDungeonWindowLoad(100, 50); });
+window.addEventListener("resize", onZoomChange);
 var dungeonWindow = document.getElementById("dungeon-window");
 
 

@@ -1,0 +1,75 @@
+@charset "ISO-8859-1";
+
+/*
+	(Navbar)Deep red - #3a0102
+	(Background)Red Gray - #746363
+*/
+
+@font-face {
+	font-family: titania;
+	src: url(Titania-Regular.ttf);
+}
+
+@font-face {
+	font-family: empire;
+	src: url(aAbsoluteEmpire.otf);
+}
+
+@font-face {
+	font-family: dela-gothic;
+	src: url(DelaGothicOne-Regular.ttf);
+}
+
+* {
+	font-family: dela-gothic;
+	color: white;
+}
+
+#main-navbar {
+	background-color: #3a0102;
+}
+
+#background-div {
+	background-color: #746363;
+	
+	min-height: 100vh;
+}
+
+.content h3 {
+	font-family: empire;
+	color: white;
+	font-size: 36pt;	
+}
+
+p {
+	font-size: 20pt;
+}
+
+.has-font-empire {
+	font-family: empire;
+}
+
+.has-font-dela-gothic {
+	font-family: dela-gothic;
+}
+ 
+.button {
+	background-color: #746363;
+	color: white;	
+	border: none;
+}
+
+.button:hover {
+	color: white;
+}
+
+.footer {
+	background-color: #3a0102;
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+}
+
+footer a {
+	display: block;
+}
