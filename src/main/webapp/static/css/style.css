@@ -1,0 +1,161 @@
+@import url("/css/utils.css");
+
+@font-face {
+	font-family: vollkorn;
+	src: url(/fonts/vollkorn-font/VollkornRegular-ZVJEZ.otf);
+}
+
+/*	 Remove default margins and padding	*/
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+
+/* CSS HEX */
+:root {
+	/*	 Color Palette	*/
+	--prussian-blue: #003049ff;
+	--fire-engine-red: #d62828ff;
+	--orange-wheel: #f77f00ff;
+	--xanthous: #fcbf49ff;
+	--vanilla: #eae2b7ff;
+	/*	 Alt Color Palette for different element states   */
+	--active-fire-engine: rgb(138, 26, 26);
+	--active-vanilla: rgb(224, 214, 150);
+	/*	 Box Shadow Palettes	*/
+	--prussian-blue-shadow: rgb(0, 23, 36);
+	
+	font-family: vollkorn;
+}
+
+body {
+	background-color: var(--prussian-blue);
+	color: var(--vanilla);
+	font-size: 24px;
+}
+
+/*	 Container Styling	
+	
+	The "container" class applies turns divs into flexbox elements with no justification or alignment
+	so that child elements can easily be aligned to one side or the other on the template
+*/
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-content: start;
+	align-items: start;
+
+}
+
+/*	 Anchor Tag Styling	*/
+
+a:link {
+	color: var(--xanthous);	
+}
+
+a:hover {
+	color: var(--orange-wheel);
+}
+
+a:active {
+	color: var(--xanthous);
+}
+
+a:visited {
+	color: var(--xanthous);
+}
+
+a:visited:hover {
+	color: var(--orange-wheel);
+}
+
+a:visited:active {
+	color: var(--vanilla);
+}
+
+/*	 Anchor Tags Styled as Buttons	*/
+
+a.btn {
+	background-color: var(--fire-engine-red);
+	color: var(--vanilla);
+	padding: 5px;
+	border-radius: 5px;
+	
+	text-decoration: none;
+}
+
+a.btn:hover {
+	background-color: var(--active-fire-engine);
+	color: var(--active-vanilla);
+}
+
+/*	 Button Styling	*/
+
+button {
+	font-family: vollkorn;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: var(--active-fire-engine);
+	color: var(--vanilla);
+}
+
+button:hover {
+	color: var(--active-vanilla);
+}
+
+/*	Navbar styling  */
+
+.navbar {
+	display: flex;
+	width: 100%;
+	height: 60px;
+	
+	justify-content: end;
+	align-items: center;
+	gap: 15px;
+}
+
+/*	 Form Styling	*/
+
+.form-div {
+	align-self: center;
+	padding: 15px;
+	border-radius: 5px;
+	background-color: var(--prussian-blue-shadow);
+	width: 30vw;
+}
+
+.form-div>p {
+	font-size: 32px;
+	margin: 10px;
+}
+
+form {	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 15px;
+}
+
+form input {
+	width: 75%;
+	height: 30px;
+	border-radius: 5px;
+	border: none;
+	padding: 5px;
+}
+
+form .form-footer {
+	width: 75%;
+	margin-top: 15px;
+	
+	display: flex;
+	justify-content: space-between;
+}
+
+form button {
+	min-width: 15%;
+}

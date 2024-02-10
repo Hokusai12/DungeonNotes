@@ -1,0 +1,5 @@
+/* For the "Aready a user?" and "Not a user?" links between registration and login */
+
+form a {
+	font-size: 18px;
+}

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<title>Homepage</title>
+</head>
+<body>
+	<h1>Homepage</h1>
+	<p>User Id: <span th:text="${session.userId}"></span></p>
+	<p>Username: <span th:text="${userInSession.username}"></span></p>
+	<p>Email: <span th:text="${userInSession.email}"></span></p>
+</body>
