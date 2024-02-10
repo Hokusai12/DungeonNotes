@@ -68,7 +68,7 @@ public class HomeController {
 		User loginUser = userService.loginUser(user);
 		
 		if(loginUser == null) {
-			result.rejectValue("email", "Incorrect Login");
+			result.rejectValue("email", "incorrectLogin", "Invalid Login");
 			return "login";
 		}
 		
@@ -89,5 +89,11 @@ public class HomeController {
 		model.addAttribute("userInSession", userInSession);
 		
 		return "homepage";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 }

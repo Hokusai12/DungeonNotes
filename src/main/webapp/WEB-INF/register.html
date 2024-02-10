@@ -13,11 +13,11 @@
 		<div class="form-div">
 			<p>Register New User</p>
 			<form action="#" th:action="@{/register}" method="POST" th:object="${user}">
-				<p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+				<p class="input-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
 				<input type="text" th:field="*{username}" placeholder="Username"/>
-				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+				<p class="input-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 				<input type="email" th:field="*{email}" placeholder="Email Address"/>
-				<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+				<p class="input-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 				<input type="password" th:field="*{password}" placeholder="Password"/>
 				<input type="password" th:field="*{confirm}" placeholder="Confirm Password"/>
 				<div class="form-footer">

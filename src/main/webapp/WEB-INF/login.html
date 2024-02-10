@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	  xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<link rel="stylesheet" th:href="@{/css/style.css}" />
-<link rel="stylesheet" th:href="@{/css/register_and_login.css}"/>
-<title>Dungeon Notes</title>
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/register_and_login.css}"/>
+	<title>Dungeon Notes</title>
 </head>
 <body>
 	<div class="container">
@@ -13,9 +13,8 @@
 		<div class="form-div">
 			<p>Login</p>
 			<form action="#" th:action="@{/login}" method="POST" th:object="${user}">
-				<p th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+				<p class="input-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 				<input type="email" th:field="*{email}" placeholder="Email Address"/>
-				<p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
 				<input type="password" th:field="*{password}" placeholder="Password"/>
 				<div class="form-footer">
 					<button>Login</button>

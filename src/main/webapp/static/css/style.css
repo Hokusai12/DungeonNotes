@@ -47,7 +47,11 @@ body {
 	justify-content: start;
 	align-content: start;
 	align-items: start;
-
+	max-width: 100vw;
+	max-height: 100vh;
+	padding: 15px;
+	
+	overflow: hidden;
 }
 
 /*	 Anchor Tag Styling	*/
@@ -158,4 +162,10 @@ form .form-footer {
 
 form button {
 	min-width: 15%;
+}
+
+form p.input-error {
+	color: var(--fire-engine-red);
+	font-size: 14px;
+	align-self: start;
 }

@@ -55,7 +55,7 @@ public class UserService {
 	public User loginUser(User user) {
 		//the user only has an email and password attribute applied, nothing else
 		
-		//Check if user exists by email
+		//Check if email is already in DB
 		Optional<User> checkUser = userRepo.getUserByEmail(user.getEmail());
 		if(!checkUser.isPresent()) {
 			return null;
