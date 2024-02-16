@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ianhearne.dungeonnotes.models.User;
+import com.ianhearne.dungeonnotes.services.ArticleService;
 import com.ianhearne.dungeonnotes.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,8 @@ public class HomeController {
 	
 	@Autowired
 	UserService userService;
+	@Autowired
+	ArticleService articleService;
 	
 	@GetMapping("/")
 	public String landingPage() {
@@ -85,7 +88,8 @@ public class HomeController {
 		
 		Long userId = (Long)session.getAttribute("userId");
 		User userInSession = userService.getUserById(userId);
-		
+	
+		model.addAttribute("userWorlds", userInSession.getWorlds());
 		model.addAttribute("userInSession", userInSession);
 		
 		return "homepage";

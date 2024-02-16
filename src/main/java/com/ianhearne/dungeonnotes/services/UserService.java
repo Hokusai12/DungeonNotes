@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import com.ianhearne.dungeonnotes.models.User;
-import com.ianhearne.dungeonnotes.models.UserAuthority;
 import com.ianhearne.dungeonnotes.repositories.UserRepository;
 
 @Service
@@ -16,9 +15,6 @@ public class UserService {
 
 	@Autowired
 	UserRepository userRepo;
-	
-	@Autowired
-	UserAuthorityService authService;
 	
 	public User saveUser(User user, BindingResult result) {
 		boolean isValid = true;
@@ -44,10 +40,6 @@ public class UserService {
 		//Hash the password and store that on the DB
 		String pwHash = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(pwHash);
-		
-		//Set userAuthority to User Level
-		UserAuthority userAuth = authService.getAuthority(Long.valueOf(2));
-		user.setAuthority(userAuth);
 		
 		return userRepo.save(user);
 	}

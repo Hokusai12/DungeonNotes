@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<title>Dungeon Notes</title>
+</head>
+<body>
+	<div class="container">
+		<h1 th:text="${world.name}"></h1>
+		<ul>
+			<li th:text="${world.rootFolder.name}"></li>
+		</ul>
+	</div>
+</body>
+</html>

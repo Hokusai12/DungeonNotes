@@ -3,9 +3,9 @@ package com.ianhearne.dungeonnotes.repositories;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.ianhearne.dungeonnotes.models.UserAuthority;
+import com.ianhearne.dungeonnotes.models.World;
 
 @Repository
-public interface UserAuthorityRepository extends CrudRepository<UserAuthority, Long>{
+public interface WorldRepository extends CrudRepository<World, Long>{
 	
 }

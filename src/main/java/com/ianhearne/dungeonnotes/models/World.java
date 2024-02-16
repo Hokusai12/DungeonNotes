@@ -2,6 +2,7 @@ package com.ianhearne.dungeonnotes.models;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,36 +11,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-
-/*
- * 		---Articles---
- * Articles are the notes that the user will be taking for their world.
- * For right now the user can write html and css to style and write their articles,
- * might allow other formats later down the road. Markdown or plain text would be good.
- */
-
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="articles")
-public class Article {
-	
+@Table(name="worlds")
+public class World {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message="Title required")
-	@Size(min=3, max=255, message="Article title must be 3-255 characters")
-	private String title;
-	private String text;
+	@NotEmpty(message="World name is required")
+	private String name;
+	
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="rootFolder_id")
+	private Folder rootFolder;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="folder_id")
-	private Folder folder;
+	@JoinColumn(name="user_id")
+	private User creator;
 	
 	@Column(updatable=false)
 	private Date createdAt;
@@ -48,47 +44,58 @@ public class Article {
 	@PrePersist
 	private void onCreate() {
 		this.createdAt = new Date();
-		this.updatedAt = new Date();
-		if(this.text == null) {
-			this.text = "";
-		}
 	}
 	
 	@PreUpdate
 	private void onUpdate() {
 		this.updatedAt = new Date();
 	}
-	
-	//Getters and Setters
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public String getTitle() {
-		return title;
+
+	public Long getId() {
+		return id;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public String getText() {
-		return text;
+
+	public String getName() {
+		return name;
 	}
-	public void setText(String text) {
-		this.text = text;
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Folder getRootFolder() {
+		return rootFolder;
+	}
+
+	public void setRootFolder(Folder rootFolder) {
+		this.rootFolder = rootFolder;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 }

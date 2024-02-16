@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<title>Dungeon Notes</title>
+</head>
+<body>
+	<div class="container">
+		<div class="form-div">
+			<form action="#" th:method="post" th:action="@{/world/new}" th:object="${newWorld}">
+				<p class="input-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+				<input type="text" th:field="*{name}"/>
+				<button>Save World</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<title>Dungeon Notes</title>
+</head>
+<body>
+	<div class="container">
+	<h1>Edit <span th:text="${article.title}"></span></h1>
+		<div class="form-div">
+			<form action="#" th:action="@{|/article/edit/${article.id}|}" th:method="put" th:object="${article}">
+				<input type="text" th:value="*{title}" th:field="*{title}"/>
+				<textarea th:field="*{text}" cols="30" rows="10" th:text="*{text}"></textarea>
+				<button>Save Changes</button>
+			</form>
+		</div>
+		<form action="#" th:action="@{|/article/delete/${article.id}|}" th:method="delete">
+			<button>Delete Article</button>
+		</form>
+	</div>
+	
+</body>
+</html>

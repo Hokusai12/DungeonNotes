@@ -49,9 +49,15 @@ body {
 	align-items: start;
 	max-width: 100vw;
 	max-height: 100vh;
-	padding: 15px;
-	
-	overflow: hidden;
+	margin: 25px;
+
+	overflow: visible;
+}
+
+/*	 UL and OL Styling	*/
+
+ul {
+	margin-left: 25px;
 }
 
 /*	 Anchor Tag Styling	*/
