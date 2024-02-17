@@ -30,6 +30,11 @@ public class FolderService {
 	}
 	
 	public Folder saveFolder(Folder newFolder) {
+		
+		if(newFolder.getParentFolder().getId() == newFolder.getId()) {
+			return null;
+		}
+		
 		return folderRepo.save(newFolder);
 	}
 }

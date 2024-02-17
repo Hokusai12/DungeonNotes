@@ -8,17 +8,17 @@
 </head>
 <body>
 	<div th:fragment="folderStructure (rootFolder)">
-		<ul>
-			<li th:text="${rootFolder.name}"></li>
-			<li th:unless="${#lists.isEmpty(rootFolder.childFolders)}" th:each="folder : ${rootFolder.childFolders}">
-				<div th:insert="~{this :: folderStructure (${folder})}"></div>
-			</li>
-			<li th:unless="${#lists.isEmpty(rootFolder.articles)}">
-				<ul th:each="article : ${rootFolder.articles}">
-					<li th:text="${article.title}"></li>
-				</ul>
-			</li>
-		</ul>
+		<details>
+			<summary th:text="${rootFolder.name}"></summary>
+			<div style="margin-left: 20px;">
+				<th:block th:unless="${#lists.isEmpty(rootFolder.childFolders)}" th:each="folder : ${rootFolder.childFolders}">
+					<div th:insert="~{this :: folderStructure (${folder})}"></div>
+				</th:block>
+				<th:block th:unless="${#lists.isEmpty(rootFolder.articles)}">
+					<a href="#" th:each="article : ${rootFolder.articles}" th:text=${article.title}></a>
+				</th:block>
+			</div>
+		</details>
 	</div>
 </body>
 </html>
