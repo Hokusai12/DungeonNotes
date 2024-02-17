@@ -5,14 +5,25 @@
 <head>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/world.css}" />
 	<title>Dungeon Notes</title>
 </head>
 <body>
+
 	<div class="container">
 		<h1 th:text="${world.name}"></h1>
-		<ul>
-			<li th:text="${world.rootFolder.name}"></li>
-		</ul>
+		
+		<!-- Fragment that recursively displays the folder structure -->
+		<div class="folder-structure" th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${world.rootFolder})}"></div>
+		<div id="add-folder">
+			<form action="#" th:action="@{|/world/${world.id}/add-folder|}" th:method="post" th:object="${newFolder}">
+				<input type="hidden" th:field="*{id}"/>
+				<select th:field="*{parentFolder}" th:insert="~{@{/world_templates/selectFile} :: selectFolder (${world.rootFolder})}"></select>
+				<p class="input-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+				<input type="text" th:field="*{name}" value=""/>
+				<button>Add Folder</button>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

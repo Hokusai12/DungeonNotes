@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title></title>
+</head>
+<body>
+	<th:block th:fragment="options (baseFolder)">
+		<option th:value="${baseFolder.id}" th:text="${baseFolder.name}"></option>
+		<th:block th:unless="${#lists.isEmpty('baseFolder.childFolders')}">
+			<th:block th:each="folder : ${baseFolder.childFolders}">
+				<th:block th:insert="~{this :: options (${folder})}"></th:block>
+			</th:block>
+		</th:block>
+	</th:block>
+	
+	<th:block th:fragment="selectFolder (rootFolder)">
+		<th:block th:insert="~{this :: options (${rootFolder})}"></th:block>
+	</th:block>
+</body>
+</html>

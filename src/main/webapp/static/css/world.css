@@ -1,0 +1,6 @@
+@charset "ISO-8859-1";
+
+/*	 Folder Structure Styling	*/
+div.folder-structure ul {
+	list-style-type: none;
+}

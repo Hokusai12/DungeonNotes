@@ -51,7 +51,7 @@ body {
 	max-height: 100vh;
 	margin: 25px;
 
-	overflow: visible;
+	overflow: hidden;
 }
 
 /*	 UL and OL Styling	*/

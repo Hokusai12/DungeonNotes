@@ -16,7 +16,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="folders")
@@ -25,17 +25,17 @@ public class Folder {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotEmpty(message="Folder name is required")
+	@Size(min=1, max=32, message="Folder name must be 1-32 characters long")
 	private String name;
 	
 	@OneToOne(mappedBy = "rootFolder")
 	private World world;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="parent_id", nullable=true)
 	private Folder parentFolder;
 	
-	@OneToMany(mappedBy="id", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
+	@OneToMany(mappedBy="parentFolder", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
 	private List<Folder> childFolders;
 	
 	@OneToMany(mappedBy="folder", fetch=FetchType.LAZY)
