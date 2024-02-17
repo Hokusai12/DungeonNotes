@@ -82,9 +82,6 @@ public class HomeController {
 	
 	@GetMapping("/home")
 	public String wallpage(Model model, HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/login";
-		}
 		
 		Long userId = (Long)session.getAttribute("userId");
 		User userInSession = userService.getUserById(userId);

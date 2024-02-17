@@ -29,7 +29,7 @@ public class World {
 	private String name;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name="rootFolder_id")
 	private Folder rootFolder;
 	

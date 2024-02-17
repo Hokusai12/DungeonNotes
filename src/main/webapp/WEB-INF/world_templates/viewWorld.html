@@ -12,7 +12,17 @@
 
 	<div class="container">
 		<h1 th:text="${world.name}"></h1>
-		
+		<form action="#" th:action="@{|/world/${world.id}/update|}" th:method="put" th:object="${world}">
+			<input type="hidden" th:field="*{id}"/>
+			<input type="hidden" th:field="*{rootFolder}"/>
+			<p class="input-error" th:if="${#fields.hasErrors('*')}" th:errors="*{*}"></p>
+			<input type="text" th:field="*{name}"/>
+			<button>Change Name</button>
+		</form>
+		<!-- Delete Form -->
+		<form action="#" th:action="@{|/world/${world.id}/delete|}" th:method="delete">
+			<button>Delete World</button>
+		</form>
 		<!-- Fragment that recursively displays the folder structure -->
 		<div class="folder-structure" th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${world.rootFolder})}"></div>
 		<div id="add-folder">

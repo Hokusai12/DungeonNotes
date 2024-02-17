@@ -14,12 +14,15 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+
+import com.ianhearne.dungeonnotes.interceptors.SessionCheckInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -125,5 +128,9 @@ public class SpringWebConfig
     	filterRegBean.setUrlPatterns(Arrays.asList("/*"));
     	return filterRegBean;
     }
-    
+        
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+    	registry.addInterceptor(new SessionCheckInterceptor());
+    }
 }

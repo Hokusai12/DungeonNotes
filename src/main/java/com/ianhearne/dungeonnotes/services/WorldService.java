@@ -19,9 +19,15 @@ public class WorldService {
 	public World saveWorld(World newWorld) {
 		Folder rootFolder = new Folder();
 		rootFolder.setName(newWorld.getName());
+		folderService.saveFolder(rootFolder);
+		
 		newWorld.setRootFolder(rootFolder);
 	
 		return worldRepo.save(newWorld);
+	}
+	
+	public World updateWorld(World world) {
+		return worldRepo.save(world);
 	}
 	
 	public World getWorldById(Long id) {
@@ -30,5 +36,9 @@ public class WorldService {
 			return checkWorld.get();
 		}
 		return null;
+	}
+	
+	public void deleteById(Long id) {
+		worldRepo.deleteById(id);
 	}
 }

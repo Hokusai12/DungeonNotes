@@ -38,7 +38,7 @@ public class Folder {
 	@OneToMany(mappedBy="parentFolder", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
 	private List<Folder> childFolders;
 	
-	@OneToMany(mappedBy="folder", fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="folder", fetch=FetchType.LAZY, cascade=CascadeType.REMOVE)
 	private List<Article> articles;
 	
 	private Date updatedAt;

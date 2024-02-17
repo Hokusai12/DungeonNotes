@@ -33,6 +33,7 @@ body {
 	background-color: var(--prussian-blue);
 	color: var(--vanilla);
 	font-size: 24px;
+	overflow-x: hidden;
 }
 
 /*	 Container Styling	
@@ -50,8 +51,6 @@ body {
 	max-width: 100vw;
 	max-height: 100vh;
 	margin: 25px;
-
-	overflow: hidden;
 }
 
 /*	 UL and OL Styling	*/

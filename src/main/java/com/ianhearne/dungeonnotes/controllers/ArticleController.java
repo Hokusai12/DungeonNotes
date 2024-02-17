@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/article")
+@RequestMapping("/world/article")
 public class ArticleController {
 	@Autowired
 	ArticleService articleService;
@@ -29,9 +29,6 @@ public class ArticleController {
 	
 	@GetMapping("/new")
 	public String newArticle(Model model, HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "/logout";
-		}
 		model.addAttribute("newArticle", new Article());
 		
 		return "article_templates/createArticle";
@@ -43,9 +40,6 @@ public class ArticleController {
 			BindingResult result,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "/logout";
-		}
 		if(result.hasErrors()) {
 			return "article_templates/createArticle";
 		}
@@ -61,10 +55,6 @@ public class ArticleController {
 			@PathVariable(name="id") Long articleId,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "/logout";
-		}
-		
 		Article currentArticle = articleService.getArticleById(articleId);
 		if(currentArticle == null) {
 			return "redirect:/home";
@@ -83,9 +73,6 @@ public class ArticleController {
 			BindingResult result,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "/logout";
-		}
 		if(result.hasErrors()) {
 			return "article_templates/editArticle";
 		}
@@ -100,9 +87,6 @@ public class ArticleController {
 	
 	@DeleteMapping("/delete/{id}")
 	public String deleteArticle(@PathVariable(name="id") Long id, HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "/logout";
-		}
 		
 		articleService.deleteArticleById(id);
 		

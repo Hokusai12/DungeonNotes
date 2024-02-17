@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ianhearne.dungeonnotes.models.Folder;
@@ -36,14 +38,11 @@ public class WorldController {
 			@PathVariable(name="id") Long worldId,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
 		World currentWorld = worldService.getWorldById(worldId);
 		model.addAttribute("world", currentWorld);
 		model.addAttribute("newFolder", new Folder());
 		
-		folderService.printFolderStructure(currentWorld.getRootFolder());
+		//folderService.printFolderStructure(currentWorld.getRootFolder());
 		
 		
 		return "world_templates/viewWorld";
@@ -51,9 +50,6 @@ public class WorldController {
 	
 	@GetMapping("/new")
 	public String newWorld(Model model, HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
 		model.addAttribute("newWorld", new World());
 		
 		return "world_templates/newWorld";
@@ -65,9 +61,6 @@ public class WorldController {
 			BindingResult result,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
 		if(result.hasFieldErrors("name")) {
 			return "world_templates/newWorld";
 		}
@@ -85,6 +78,27 @@ public class WorldController {
 		return "redirect:/home";
 	}
 	
+	@PutMapping("/{id}/update")
+	public String updateWorld(
+			@Valid @ModelAttribute("world") World world,
+			BindingResult result,
+			@PathVariable(name="id") Long id,
+			Model model,
+			HttpSession session) {
+		World dbWorld = worldService.getWorldById(id);
+		if(result.hasErrors()) {
+			model.addAttribute("world", dbWorld);
+			model.addAttribute("newFolder", new Folder());
+			return "world_templates/viewWorld";
+		}
+		
+		dbWorld.setName(world.getName());
+		
+		worldService.updateWorld(dbWorld);
+		
+		return "redirect:/world/" + dbWorld.getId();
+	}
+	
 	@PostMapping("{id}/add-folder")
 	public String addFolder(
 			@Valid @ModelAttribute("newFolder") Folder newFolder,
@@ -92,20 +106,10 @@ public class WorldController {
 			@PathVariable(name="id") Long id,
 			Model model,
 			HttpSession session) {
-		if(session.getAttribute("userId") == null) {
-			return "redirect:/logout";
-		}
-		
 		if(result.hasErrors()) {
 			model.addAttribute("world", worldService.getWorldById(id));
 			return "world_templates/viewWorld";
 		}
-		
-		/*
-		World world = worldService.getWorldById(id);
-		Folder rootFolder = world.getRootFolder();
-		newFolder.setParentFolder(rootFolder);
-		*/
 		
 		Folder savedFolder = folderService.saveFolder(newFolder);
 		
@@ -114,5 +118,14 @@ public class WorldController {
 		}
 		
 		return "redirect:/world/" + id;
+	}
+	
+	@DeleteMapping("{id}/delete")
+	public String deleteWorld(
+			@PathVariable(name="id") Long id,
+			HttpSession session) {
+		worldService.deleteById(id);
+		
+		return "redirect:/home";
 	}
 }
