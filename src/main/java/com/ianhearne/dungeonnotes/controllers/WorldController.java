@@ -7,14 +7,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ianhearne.dungeonnotes.models.Article;
 import com.ianhearne.dungeonnotes.models.Folder;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.World;
+import com.ianhearne.dungeonnotes.services.ArticleService;
 import com.ianhearne.dungeonnotes.services.FolderService;
 import com.ianhearne.dungeonnotes.services.UserService;
 import com.ianhearne.dungeonnotes.services.WorldService;
@@ -32,15 +34,23 @@ public class WorldController {
 	UserService userService;
 	@Autowired
 	FolderService folderService;
+	@Autowired
+	ArticleService articleService;
 	
-	@GetMapping("/{id}")
+	@GetMapping("")
 	public String viewWorld(
-			@PathVariable(name="id") Long worldId,
+			@RequestParam(name="world-id") Long worldId,
+			@RequestParam(name="article-id", required=false) Long articleId,
 			Model model,
 			HttpSession session) {
 		World currentWorld = worldService.getWorldById(worldId);
 		model.addAttribute("world", currentWorld);
 		model.addAttribute("newFolder", new Folder());
+		model.addAttribute("newArticle", new Article());
+		
+		if(articleId !=  null) {
+			model.addAttribute("selectedArticle", articleService.getArticleById(articleId));
+		}
 		
 		//folderService.printFolderStructure(currentWorld.getRootFolder());
 		
@@ -78,14 +88,15 @@ public class WorldController {
 		return "redirect:/home";
 	}
 	
-	@PutMapping("/{id}/update")
+	@PutMapping("/update")
 	public String updateWorld(
 			@Valid @ModelAttribute("world") World world,
 			BindingResult result,
-			@PathVariable(name="id") Long id,
+			@RequestParam(name="world-id") Long worldId,
 			Model model,
 			HttpSession session) {
-		World dbWorld = worldService.getWorldById(id);
+		
+		World dbWorld = worldService.getWorldById(worldId);
 		if(result.hasErrors()) {
 			model.addAttribute("world", dbWorld);
 			model.addAttribute("newFolder", new Folder());
@@ -99,11 +110,11 @@ public class WorldController {
 		return "redirect:/world/" + dbWorld.getId();
 	}
 	
-	@PostMapping("{id}/add-folder")
+	@PostMapping("/add-folder")
 	public String addFolder(
 			@Valid @ModelAttribute("newFolder") Folder newFolder,
 			BindingResult result,
-			@PathVariable(name="id") Long id,
+			@RequestParam(name="world-id") Long id,
 			Model model,
 			HttpSession session) {
 		if(result.hasErrors()) {
@@ -120,9 +131,9 @@ public class WorldController {
 		return "redirect:/world/" + id;
 	}
 	
-	@DeleteMapping("{id}/delete")
+	@DeleteMapping("/delete")
 	public String deleteWorld(
-			@PathVariable(name="id") Long id,
+			@RequestParam(name="world-id") Long id,
 			HttpSession session) {
 		worldService.deleteById(id);
 		

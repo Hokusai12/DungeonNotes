@@ -91,4 +91,13 @@ public class Article {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	public Folder getFolder() {
+		return folder;
+	}
+
+	public void setFolder(Folder folder) {
+		this.folder = folder;
+	}
+	
 }

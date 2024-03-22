@@ -4,3 +4,19 @@
 div.folder-structure ul {
 	list-style-type: none;
 }
+
+details div.folder-content {
+	margin-left: 25px;
+}
+
+.main-world-container {
+	height: 90vh;
+	display: flex;
+}
+
+#add-article-form {
+	width: 30%;
+	padding: 5vw;
+	border-radius: 15px;
+	background-color: black;
+}

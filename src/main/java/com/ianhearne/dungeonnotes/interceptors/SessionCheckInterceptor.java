@@ -18,7 +18,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		String requestUrl = request.getRequestURL().toString();
 		
-		if(requestUrl.contains("/css/") || requestUrl.contains("/js/")) {
+		if(requestUrl.contains("/css/") 
+				|| requestUrl.contains("/js/") 
+				|| requestUrl.contains("/fonts/")) {
 			return true;
 		}
 		

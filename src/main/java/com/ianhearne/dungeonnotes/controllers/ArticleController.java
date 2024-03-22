@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ianhearne.dungeonnotes.models.Article;
 import com.ianhearne.dungeonnotes.services.ArticleService;
@@ -37,6 +38,7 @@ public class ArticleController {
 	@PostMapping("/new")
 	public String saveNewArticle(
 			@Valid @ModelAttribute(name="newArticle") Article newArticle,
+			@RequestParam(name="world-id") Long worldId,
 			BindingResult result,
 			Model model,
 			HttpSession session) {
@@ -45,9 +47,9 @@ public class ArticleController {
 		}
 		
 		
-		articleService.saveArticle(newArticle);
+		Article savedArticle = articleService.saveArticle(newArticle);
 		
-		return "redirect:/home";
+		return "redirect:/world?world-id="+worldId+"&article-id="+savedArticle.getId();
 	}
 	
 	@GetMapping("/edit/{id}")
@@ -66,9 +68,10 @@ public class ArticleController {
 		return "article_templates/editArticle";
 	}
 	
-	@PutMapping("/edit/{id}")
+	@PutMapping("/update")
 	public String saveEditsToArticle(
-			@PathVariable(name="id") Long id,
+			@RequestParam(name="world-id") Long worldId,
+			@RequestParam(name="article-id") Long articleId,
 			@ModelAttribute(name="article") Article editedArticle,
 			BindingResult result,
 			Model model,
@@ -82,7 +85,7 @@ public class ArticleController {
 		articleService.saveArticle(editedArticle);
 		
 		
-		return "redirect:/home";
+		return "redirect:/world?world-id="+worldId+"&article-id="+articleId;
 	}
 	
 	@DeleteMapping("/delete/{id}")

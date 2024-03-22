@@ -7,15 +7,15 @@
 <title></title>
 </head>
 <body>
-	<div th:fragment="folderStructure (rootFolder)">
+	<div class="folder-structure" th:fragment="folderStructure (rootFolder)">
 		<details>
 			<summary th:text="${rootFolder.name}"></summary>
-			<div style="margin-left: 20px;">
+			<div class="folder-content">
 				<th:block th:unless="${#lists.isEmpty(rootFolder.childFolders)}" th:each="folder : ${rootFolder.childFolders}">
 					<div th:insert="~{this :: folderStructure (${folder})}"></div>
 				</th:block>
 				<th:block th:unless="${#lists.isEmpty(rootFolder.articles)}">
-					<a href="#" th:each="article : ${rootFolder.articles}" th:text=${article.title}></a>
+					<a th:each="article : ${rootFolder.articles}" th:href="@{|/world?world-id=${world.id}&article-id=${article.id}|}" th:text="${article.title}"></a>
 				</th:block>
 			</div>
 		</details>
