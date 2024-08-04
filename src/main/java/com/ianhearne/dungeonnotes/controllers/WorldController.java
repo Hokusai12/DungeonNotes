@@ -1,5 +1,9 @@
 package com.ianhearne.dungeonnotes.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ianhearne.dungeonnotes.models.Article;
 import com.ianhearne.dungeonnotes.models.Folder;
+import com.ianhearne.dungeonnotes.models.TileMap;
 import com.ianhearne.dungeonnotes.models.User;
 import com.ianhearne.dungeonnotes.models.World;
 import com.ianhearne.dungeonnotes.services.ArticleService;
 import com.ianhearne.dungeonnotes.services.FolderService;
+import com.ianhearne.dungeonnotes.services.TileMapService;
 import com.ianhearne.dungeonnotes.services.UserService;
 import com.ianhearne.dungeonnotes.services.WorldService;
 
@@ -36,6 +42,8 @@ public class WorldController {
 	FolderService folderService;
 	@Autowired
 	ArticleService articleService;
+	@Autowired
+	TileMapService tileMapService;
 	
 	@GetMapping("")
 	public String viewWorld(
@@ -90,24 +98,36 @@ public class WorldController {
 	
 	@PutMapping("/update")
 	public String updateWorld(
-			@Valid @ModelAttribute("world") World world,
-			BindingResult result,
 			@RequestParam(name="world-id") Long worldId,
+			@RequestParam HashMap<String, String> formData,
 			Model model,
 			HttpSession session) {
 		
 		World dbWorld = worldService.getWorldById(worldId);
-		if(result.hasErrors()) {
-			model.addAttribute("world", dbWorld);
-			model.addAttribute("newFolder", new Folder());
-			return "world_templates/viewWorld";
-		}
 		
-		dbWorld.setName(world.getName());
+		dbWorld.setName(formData.get("name"));
 		
 		worldService.updateWorld(dbWorld);
 		
-		return "redirect:/world/" + dbWorld.getId();
+		return "redirect:/world?world-id=" + dbWorld.getId();
+	}
+	
+	@PostMapping("/search")
+	public String searchWorld(
+			@RequestParam HashMap<String, String> formData) {
+		String searchText = formData.get("search-text");
+		return "redirect:/world/search?q="+searchText;
+	}
+	
+	@GetMapping("/search")
+	public String returnSearchResults(
+		@RequestParam(name="q") String query,
+		Model model) {
+		
+		List<World> searchResults = worldService.searchWorlds(query);
+		model.addAttribute("worldList", searchResults);
+		
+		return "searchResults";
 	}
 	
 	@PostMapping("/add-folder")
@@ -115,8 +135,7 @@ public class WorldController {
 			@Valid @ModelAttribute("newFolder") Folder newFolder,
 			BindingResult result,
 			@RequestParam(name="world-id") Long id,
-			Model model,
-			HttpSession session) {
+			Model model) {
 		if(result.hasErrors()) {
 			model.addAttribute("world", worldService.getWorldById(id));
 			return "world_templates/viewWorld";
@@ -128,15 +147,115 @@ public class WorldController {
 			System.out.println("It's a root folder");
 		}
 		
-		return "redirect:/world/" + id;
+		return "redirect:/world?world-id=" + id;
 	}
 	
 	@DeleteMapping("/delete")
 	public String deleteWorld(
-			@RequestParam(name="world-id") Long id,
-			HttpSession session) {
-		worldService.deleteById(id);
+			@RequestParam(name="world-id") Long worldId,
+			@RequestParam(name="article-id", required=false) Long articleId,
+			@RequestParam HashMap<String, String> formData) {
 		
-		return "redirect:/home";
+		if(articleId == null) {
+			worldService.deleteById(worldId);
+			return "redirect:/home";
+		}
+		else {
+			articleService.deleteArticleById(articleId);
+			return "redirect:/world?world-id="+worldId;
+		}
+	}
+	
+	@DeleteMapping("/delete-folder")
+	public String deleteFolder(
+			@RequestParam("world-id") Long worldId,
+			@RequestParam("folder-id") Long folderId) {
+		World world = worldService.getWorldById(worldId);
+		Folder folder = folderService.getFolderById(folderId);
+		
+		if(worldService.worldHasFolder(world, folder)) {
+			folderService.deleteFolder(folderId);
+		}
+		
+		return "redirect:/world?world-id=" + worldId;
+	}
+	
+	@GetMapping("/tile-map-creator")
+	public String tileMapCreator(
+			@RequestParam("world-id") Long worldId,
+			@RequestParam(name="tile-map-id", required=false) Long tileMapId,
+			Model model) {
+		
+		TileMap tileMap = tileMapService.findById(tileMapId);
+		List<Integer> tileMapData;
+		
+		if(tileMap == null) {
+			tileMap = new TileMap();
+			tileMap.setWidth(50);
+			tileMapData = tileMapService.getBlankTileMapData(tileMap.getWidth(), 25);
+		}
+		else {
+			tileMapData = tileMapService.getStretchedTileMapData(tileMap.getTileMapData());
+		}
+		model.addAttribute("tileMap", tileMap);
+		model.addAttribute("tileMapData", tileMapData);
+		
+		
+		return "world_templates/tileMapCreator";
+	}
+	
+	@PostMapping("/save-tile-map")
+	public String saveTileMap(
+			@RequestParam HashMap<String, String> formData,
+			HttpSession session) {
+		
+		Long userId = (Long) session.getAttribute("userId");
+		User user = userService.getUserById(userId);
+		Long worldId = Long.parseLong(formData.get("worldId"));
+		TileMap tileMap;
+		
+		System.out.println(formData.get("tileData"));
+		
+		//Converts the string of array data from the form to a list of integer data to store in the db
+		String[] mapDataString = formData.get("tileData").split(",");
+		List<byte[]> newTileMapData = new ArrayList<byte[]>();
+
+		for(int i = 0; i < mapDataString.length; i++) {
+			byte tileType = Byte.parseByte(mapDataString[i]);
+			int dataValue = Integer.parseInt(mapDataString[i + 1]);
+			byte leftHalf;
+			byte rightHalf;
+			if(dataValue > 1 ) {
+				leftHalf = (byte)((dataValue & -256) >> 8);
+				rightHalf = (byte)(dataValue & -1);
+				i++;
+			}
+			else {
+				leftHalf = 0;
+				rightHalf = 1;
+			}
+			byte[] tileData = {tileType, leftHalf, rightHalf};
+			newTileMapData.add(tileData);
+		}
+		
+		
+		//Checks if the tile map already exists or if it is a new creation
+		if(!formData.get("tileMapId").equals("NaN")) {
+			Long tileMapId = Long.parseLong(formData.get("tileMapId"));
+			tileMap = tileMapService.findById(tileMapId);
+		} else{
+			String mapName = formData.get("mapName");
+			Integer mapWidth = Integer.parseInt(formData.get("mapWidth"));
+			tileMap = new TileMap();
+			tileMap.setWorld(worldService.getWorldById(worldId));
+			tileMap.setCreator(user);
+			tileMap.setName(mapName);
+			tileMap.setWidth(mapWidth);
+		}
+		tileMap.setTileMapData(newTileMapData);
+		
+		TileMap savedTileMap = tileMapService.saveTileMap(tileMap);
+		
+		return "redirect:/world/tile-map-creator?world-id="+worldId+"&tile-map-id="+savedTileMap.getId();
 	}
 }

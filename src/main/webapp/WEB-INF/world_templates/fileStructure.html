@@ -3,22 +3,24 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title></title>
+	<meta charset="ISO-8859-1">
+	<title></title>
 </head>
 <body>
 	<div class="folder-structure" th:fragment="folderStructure (rootFolder)">
-		<details>
-			<summary th:text="${rootFolder.name}"></summary>
-			<div class="folder-content">
-				<th:block th:unless="${#lists.isEmpty(rootFolder.childFolders)}" th:each="folder : ${rootFolder.childFolders}">
-					<div th:insert="~{this :: folderStructure (${folder})}"></div>
-				</th:block>
-				<th:block th:unless="${#lists.isEmpty(rootFolder.articles)}">
-					<a th:each="article : ${rootFolder.articles}" th:href="@{|/world?world-id=${world.id}&article-id=${article.id}|}" th:text="${article.title}"></a>
-				</th:block>
-			</div>
-		</details>
+		<div class="details-n-x">
+			<details th:id="${rootFolder.id}">
+				<summary><span class="summary-left"><i class="fa-solid fa-caret-right"></i><span class="folder-name" th:text="${rootFolder.name}"></span></span><i class="fa-solid fa-ellipsis-vertical"></i></summary>
+				<div class="folder-content">
+					<th:block th:unless="${#lists.isEmpty(rootFolder.childFolders)}" th:each="folder : ${rootFolder.childFolders}">
+						<div th:insert="~{this :: folderStructure (${folder})}"></div>
+					</th:block>
+					<th:block th:unless="${#lists.isEmpty(rootFolder.articles)}">
+						<a style="display:block;" th:each="article : ${rootFolder.articles}" th:href="@{|/world?world-id=${world.id}&article-id=${article.id}|}" th:text="${article.title}"></a>
+					</th:block>
+				</div>
+			</details>
+		</div>
 	</div>
 </body>
 </html>

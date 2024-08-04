@@ -1,6 +1,7 @@
 package com.ianhearne.dungeonnotes.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,20 @@ public class FolderService {
 		}
 	}
 	
-	public Folder saveFolder(Folder newFolder) {
-		
-		if(newFolder.getParentFolder().getId() == newFolder.getId()) {
-			return null;
+	public Folder getFolderById(Long id) {
+		Optional<Folder> checkFolder = folderRepo.findById(id);
+		if(checkFolder.isPresent()) {
+			return checkFolder.get();
 		}
-		
+		return null;
+	}
+	
+	public Folder saveFolder(Folder newFolder) {
+
 		return folderRepo.save(newFolder);
+	}
+	
+	public void deleteFolder(Long folderId) {
+		folderRepo.deleteById(folderId);
 	}
 }

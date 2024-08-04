@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />	
+	<style th:inline="css">
+		div#tile-map {
+			width: [[${tileMap.width * 27}]]px;
+			height: [[${#arrays.length(tileMapData) / tileMap.width * 27}]]px;
+			background-color: black;
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		div.tile {
+			background-color: white;
+			width: 25px;
+			height: 25px;
+			margin: 1px;
+		}
+	</style>
+	<title>Dungeon Notes</title>
+</head>
+<body>
+
+	<div id="tile-map">
+		<div class="tile" th:each="tileData : ${tileMapData}" th:attr="data-tile-type=${tileData}" onclick="onTileClick(event)"></div>	
+	</div>
+	<form id="save-map" action="/world/save-tile-map" method="POST">
+		<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
+		<input type="submit" value="Save Changes"/>
+	</form>
+	<script type="text/javascript" th:src="@{/js/tileMapCreator.js}"></script>
+</body>
+</html>

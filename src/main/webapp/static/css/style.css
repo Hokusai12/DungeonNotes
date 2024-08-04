@@ -53,6 +53,13 @@ body {
 	padding: 1vw;
 }
 
+.content {
+	padding: 5vh;
+	
+	width: calc(100% - 10vh);
+	background-color: var(--prussian-blue-shadow);
+}
+
 div.hidden-div {
 	display: none;
 	position: fixed;
@@ -60,16 +67,20 @@ div.hidden-div {
 	left: 0px;
 	width: 100vw;
 	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.75);
 }
 
 /*	 Sidebar Styling	*/
 
 aside.sidebar {
 	background-color: var(--prussian-blue-shadow);
-	height: 100%;	
+	height: calc(100% - 2vw);	
 	width: 15vw;
 	padding: 1vw;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 /*	 UL and OL Styling	*/
@@ -116,7 +127,6 @@ a.btn {
 }
 
 a.btn:hover {
-	background-color: var(--active-fire-engine);
 	color: var(--active-vanilla);
 }
 
@@ -124,6 +134,7 @@ a.btn:hover {
 
 input[type="submit"] {
 	font-family: vollkorn;
+	margin: 1em 0 1em 1em;
 	padding: 5px;
 	border-radius: 5px;
 	background-color: var(--active-fire-engine);
@@ -151,51 +162,52 @@ button:hover {
 .navbar {
 	padding: 2vh;
 	height: 6vh;
+	width: calc(100% - 4vh);
 	
-	background-color: rgb(15, 15, 15);
-	
-	
-	display: flex;
-	flex-direction: column;
-}
-
-.navbar .navbar-right {
-	align-self: end;
-	width: 33%;
-	
-	display: flex;
-	justify-content: end;
-	align-items: center;
-	
-	gap: 5px;
-}
-
-.navbar .navbar-left {
-	align-self: start;
-	width: 33%;
-	
-	display: flex;
-	justify-content: start;
-	align-items: center;
-}
-
-.navbar .navbar-center {
-	align-self: center;
-	width: 33%;
-	
+	background-color: rgb(30, 30, 30);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.navbar :is(.navbar-right, .navbar-center, .navbar-left) {
+	width: 33%;
+	height: 100%;
+	
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.navbar .navbar-right {
+	justify-content: end;
+}
+
+.navbar .navbar-left {
+	justify-content: start;
+}
+
+.navbar .navbar-center {
+	justify-content: space-around;
+}
+
+:is(.navbar-left, .navbar-center, .navbar-right) > *{
+	height: 100%;
+}
+
+.navbar-right > :is(i, a.btn, button), .navbar-center > :is(i, a.btn, button), .navbar-left > :is(i, a.btn, button) {
+	height: auto;
 }
 
 /*	 Form Styling	*/
 
 .form-div {
 	align-self: center;
+	margin: 2em;
 	padding: 15px;
 	border-radius: 5px;
 	background-color: var(--prussian-blue-shadow);
-	width: 30vw;
+	width: 30%;
 }
 
 .form-div>p {
@@ -210,12 +222,23 @@ form {
 	gap: 15px;
 }
 
-form input {
-	width: 75%;
+form label {
+	font-size: 20px;
+}
+
+form input, form select {
 	height: 30px;
 	border-radius: 5px;
 	border: none;
 	padding: 5px;
+}
+
+div.input-div {
+	display: flex;
+	width: 80%;
+	gap: 5px;
+	justify-content: space-between;
+	align-items: center;
 }
 
 form .form-footer {
@@ -234,4 +257,38 @@ form p.input-error {
 	color: var(--fire-engine-red);
 	font-size: 14px;
 	align-self: start;
+}
+
+form.world-search-form {
+	width: 100%;	
+	flex-direction: row;
+}
+
+.world-search {
+	width: 75%;
+}
+
+/*	 Card Styling	*/
+
+.card-list-div {
+	width: 75%;
+	padding: 2em;
+}
+
+.card {
+	margin: 1em;
+	width: 60%;
+	border-radius: 15px;
+	background-color: var(--prussian-blue-shadow);
+}
+
+.card-header {
+	padding: 0.5em;
+}
+
+.card-content {
+	padding: 0.5em;
+	border-radius: 0 0 15px 15px;
+	color: var(--prussian-blue);
+	background-color: var(--vanilla);
 }

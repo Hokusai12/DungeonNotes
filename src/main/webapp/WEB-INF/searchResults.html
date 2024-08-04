@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<title>Dungeon Notes</title>
+</head>
+<body>
+	<nav class="navbar">
+		<div class="navbar-left"></div>
+		<div class="navbar-center">
+			<form action="/world/search" method="POST" class="world-search-form">
+				<input type="search" name="search-text" class="world-search" placeholder="Explore other worlds..."/>
+			</form>
+		</div>
+		<div class="navbar-right">
+			<a class="btn" href="/logout">Logout</a>
+		</div>
+	</nav>
+	<div th:each="world : ${worldList}">
+		<h3 th:text="${world.name}"></h3>
+		<p th:text="${world.description}"></p>
+	</div>
+</body>
+</html>

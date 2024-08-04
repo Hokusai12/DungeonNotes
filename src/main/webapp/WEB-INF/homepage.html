@@ -8,15 +8,24 @@
 </head>
 <body>
 	<nav class="navbar">
+		<div class="navbar-left"></div>
+		<div class="navbar-center">
+			<form action="/world/search" method="POST" class="world-search-form">
+				<input type="search" name="search-text" class="world-search" placeholder="Explore other worlds..."/>
+			</form>
+		</div>
 		<div class="navbar-right">
 			<a class="btn" href="/logout">Logout</a>
 		</div>
 	</nav>
 	<div class="container">
-		<h1>Homepage</h1>
-		<ul th:each="world : ${userWorlds}">
-			<li><a th:href="@{|/world?world-id=${world.id}|}" th:text="${world.name}"></a></li>
-		</ul>
+		<h1>Your Worlds</h1>
+		<div class="card-list-div">
+			<div class="card" th:each="world : ${userWorlds}">
+				<div class="card-header"><a th:href="@{|/world?world-id=${world.id}|}" th:text="${world.name}"></a></div>
+				<div class="card-content" th:text="${world.description}"></div>	
+			</div>
+		</div>
 		<a class="btn" href="/world/new">New World</a>
 	</div>
 </body>

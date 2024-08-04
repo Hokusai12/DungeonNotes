@@ -1,5 +1,7 @@
 package com.ianhearne.dungeonnotes.controllers;
 
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +45,11 @@ public class ArticleController {
 			Model model,
 			HttpSession session) {
 		if(result.hasErrors()) {
-			return "article_templates/createArticle";
+			return "world?world-id=" + worldId;
+		}
+		
+		if(newArticle.getFolder().getWorld() != null) {
+			return "world?world-id=" + worldId;
 		}
 		
 		
@@ -72,23 +78,36 @@ public class ArticleController {
 	public String saveEditsToArticle(
 			@RequestParam(name="world-id") Long worldId,
 			@RequestParam(name="article-id") Long articleId,
-			@ModelAttribute(name="article") Article editedArticle,
+			@ModelAttribute(name="selectedArticle") Article selectedArticle,
 			BindingResult result,
 			Model model,
 			HttpSession session) {
-		if(result.hasErrors()) {
-			return "article_templates/editArticle";
-		}
+			
+		Article dbArticle = articleService.getArticleById(articleId);
+		dbArticle.setText(selectedArticle.getText());
+		dbArticle.setTitle(selectedArticle.getTitle());
 		
-		
-		
-		articleService.saveArticle(editedArticle);
-		
+		articleService.saveArticle(dbArticle);
 		
 		return "redirect:/world?world-id="+worldId+"&article-id="+articleId;
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@PutMapping("/update-w-form")
+	public String saveArticleTitle(
+			@RequestParam(name="world-id") Long worldId,
+			@RequestParam(name="article-id") Long articleId,
+			@RequestParam HashMap<String, String> formData) {
+		
+		Article dbArticle = articleService.getArticleById(articleId);
+		dbArticle.setTitle(formData.get("name"));
+		
+		articleService.saveArticle(dbArticle);
+		
+		return "redirect:/world?world-id="+worldId+"&article-id="+articleId;
+		
+	}
+	
+	@DeleteMapping("/delete")
 	public String deleteArticle(@PathVariable(name="id") Long id, HttpSession session) {
 		
 		articleService.deleteArticleById(id);

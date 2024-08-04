@@ -6,13 +6,24 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 <title>Dungeon Notes</title>
 </head>
-<body>
+<body>		
+	<nav class="navbar">
+		<div class="navbar-left"></div>
+		<div class="navbar-center"></div>
+		<div class="navbar-right">
+			<a class="btn" href="/home">Go Back</a>
+		</div>
+	</nav>
 	<div class="container">
 		<div class="form-div">
+			<h3>Create Your World</h3>
 			<form action="#" th:method="post" th:action="@{/world/new}" th:object="${newWorld}">
 				<p class="input-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-				<input type="text" th:field="*{name}"/>
-				<button>Save World</button>
+				<input type="text" th:field="*{name}" placeholder="World name here..."/>
+				<textarea name="world-desc" id="world-desc" cols="30" rows="10" placeholder="World description here..." th:field="*{description}"></textarea>
+				<div class="form-footer">
+					<button>Save World</button>
+				</div>
 			</form>
 		</div>
 	</div>

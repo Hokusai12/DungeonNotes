@@ -9,8 +9,7 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Login</h1>
-		<div class="form-div">
+		<div class="w-50 form-div">
 			<p>Login</p>
 			<form action="#" th:action="@{/login}" method="POST" th:object="${user}">
 				<p class="input-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>

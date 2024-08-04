@@ -7,17 +7,17 @@
 <title></title>
 </head>
 <body>
-	<th:block th:fragment="options (baseFolder)">
-		<option th:value="${baseFolder.id}" th:text="${baseFolder.name}"></option>
-		<th:block th:unless="${#lists.isEmpty('baseFolder.childFolders')}">
-			<th:block th:each="folder : ${baseFolder.childFolders}">
-				<th:block th:insert="~{this :: options (${folder})}"></th:block>
+	<th:block th:fragment="options (baseFolder, count, rootStart)">
+			<option th:if="${count > 0 or rootStart}" th:with="tab = ${count == null ? '' : '&nbsp;&nbsp;&nbsp;' * count}" th:value="${baseFolder.id}" th:text="${tab + baseFolder.name}"></option>
+			<th:block th:unless="${#lists.isEmpty('baseFolder.childFolders')}">
+				<th:block th:each="folder : ${baseFolder.childFolders}">
+					<th:block th:insert="~{this :: options (${folder}, ${count == null ? 1 : count + 1}, rootStart)}"></th:block>
+				</th:block>
 			</th:block>
-		</th:block>
 	</th:block>
 	
-	<th:block th:fragment="selectFolder (rootFolder)">
-		<th:block th:insert="~{this :: options (${rootFolder})}"></th:block>
+	<th:block th:fragment="selectFolder (rootFolder, startWithRoot)">
+		<th:block th:with="recursionCount = ${0}" th:insert="~{this :: options (${rootFolder}, ${recursionCount}, ${startWithRoot})}"></th:block>
 	</th:block>
 </body>
 </html>

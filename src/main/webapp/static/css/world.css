@@ -1,12 +1,88 @@
 @charset "ISO-8859-1";
 
+/*	 Main Window Container Styling	*/
+
+.text-editor-container {
+	padding: 5vw;
+	width: 75vw;
+	max-width: 75vw;
+}
+
+/*	Text Styling	*/
+
+.world-desc {
+	font-size: 0.8em;
+	font-style: italic;
+}
+
+
 /*	 Folder Structure Styling	*/
 div.folder-structure ul {
 	list-style-type: none;
 }
 
+details {
+	max-width: 100%;
+	width: 90%;
+}
+
+div.details-n-x {
+	display: flex;
+	justify-content: space-between;
+}
+
+summary {
+	font-size: max(6px, 0.8em);
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+summary .summary-left {
+	width: 75%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.folder-name {
+	
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+i.fa-ellipsis-vertical {
+	padding: 0 0.15em;
+	display: none;
+}
+
+i.fa-caret-right, i.fa-caret-down {
+	margin-right: 5%;
+	padding: 0 0.15em;
+}
+
+summary:hover i.fa-ellipsis-vertical {
+	display: inline;
+	vertical-align: middle;
+}
+
 details div.folder-content {
-	margin-left: 25px;
+	margin-left: 10px;
+	width: 100%;
+}
+
+div.folder-content a {
+	font-size: max(6px, 0.8em);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+details summary, details div.folder-content {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .main-world-container {
@@ -15,8 +91,48 @@ details div.folder-content {
 }
 
 #add-article-form {
-	width: 30%;
-	padding: 5vw;
+	padding: 2vw;
 	border-radius: 15px;
+}
+
+/*	Popup Div Styling	*/
+.folder-popup, .world-settings-popup {
+	position: absolute;
 	background-color: black;
+	padding: 1vw;
+	border-radius: 15px;
+	
+	flex-direction: column;
+}
+
+:is(.folder-popup, .world-settings-popup) .popup-opt {
+	width: 100%;
+	font-size: 0.75em;
+}
+
+:is(.folder-popup, .world-settings-popup) .popup-opt:hover {
+	color: var(--xanthous);
+	text-decoration: underline;
+}
+
+/*	 Text Editor Styling	*/
+.text-editor-div {
+	margin: 0 auto;
+	width: 75%;
+	display: flex;
+	flex-direction: column;
+	align-items: end;
+}
+
+#text-editor {
+	padding: 1em;
+	height: 40vh;
+	width: 100%;
+	color: var(--vanilla);
+	background-color: rgb(30, 30, 30);
+	font-size: 0.75em;
+}
+
+#text-editor:focus {
+	outline: none;
 }

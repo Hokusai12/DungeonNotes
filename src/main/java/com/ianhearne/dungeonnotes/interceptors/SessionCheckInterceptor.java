@@ -20,7 +20,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor{
 		
 		if(requestUrl.contains("/css/") 
 				|| requestUrl.contains("/js/") 
-				|| requestUrl.contains("/fonts/")) {
+				|| requestUrl.contains("/fonts/")
+				|| requestUrl.contains("/icons/")) {
 			return true;
 		}
 		
