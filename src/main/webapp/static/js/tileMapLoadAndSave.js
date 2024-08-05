@@ -12,13 +12,6 @@ function initTileGrid() {
 
 initTileGrid();
 
-
-function onTileClick(event) {
-	var tile = event.currentTarget;
-	tile.setAttribute("data-tile-type", "1");
-	tile.style.backgroundColor = "red";
-}
-
 function truncatedTileData() {
 	var truncTileData = new Array();
 	var currentTileType = Number.parseInt(tileMapDiv.children[0].getAttribute("data-tile-type"));

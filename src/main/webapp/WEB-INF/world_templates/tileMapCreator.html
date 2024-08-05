@@ -25,13 +25,14 @@
 </head>
 <body>
 
-	<div id="tile-map">
+	<div id="tile-map" th:attr="data-width=${tileMap.width}">
 		<div class="tile" th:each="tileData : ${tileMapData}" th:attr="data-tile-type=${tileData}" onclick="onTileClick(event)"></div>	
 	</div>
 	<form id="save-map" action="/world/save-tile-map" method="POST">
 		<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
 		<input type="submit" value="Save Changes"/>
 	</form>
-	<script type="text/javascript" th:src="@{/js/tileMapCreator.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tileMapTools.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tileMapLoadAndSave.js}"></script>
 </body>
 </html>
