@@ -12,7 +12,7 @@ const Tools = Object.freeze({
 	FILLRECT: "Filled Rectangle",
 	FILLCIRC: "Filled Circle"
 });
-var currentTool = Tools.LINE;
+var currentTool = Tools.FILLCIRC;
 var currentBrush = Brushes.RED;
 
 const highlightedTileData = new Map();
@@ -47,7 +47,7 @@ function onMouseMovesOverGrid(event) {
 	}
 }
 
-function onTileClick(event) {
+function onTileMapClick(event) {
 	isHighlighting = !isHighlighting;
 	isDrawing = true;
 	if(isHighlighting) {
@@ -75,6 +75,15 @@ function drawUsingTool() {
 		case Tools.RECT:
 			drawRectangle(MouseGridPoints.x1, MouseGridPoints.y1, MouseGridPoints.x2, MouseGridPoints.y2);
 			break;
+		case Tools.CIRC: 
+			drawCircle(MouseGridPoints.x1, MouseGridPoints.y1, MouseGridPoints.x2, MouseGridPoints.y2);
+			break;
+		case Tools.FILLRECT:
+			drawFillRectangle(MouseGridPoints.x1, MouseGridPoints.y1, MouseGridPoints.x2, MouseGridPoints.y2);
+			break;
+		case Tools.FILLCIRC:
+			drawFillCircle(MouseGridPoints.x1, MouseGridPoints.y1, MouseGridPoints.x2, MouseGridPoints.y2);
+			break;
 	}
 }
 
@@ -88,6 +97,14 @@ function clearHighlightedTiles() {
 function paintTile(x, y) {
 	let gridWidth = Number.parseInt(tileMap.getAttribute("data-width"));
 	let tileIndex = ((y - 1) * gridWidth) + x;
+	
+	if(tileIndex < 0 
+		|| tileIndex > tileMap.children.length
+		|| x > gridWidth - 1
+		|| x < 0) {
+		return;
+	}
+	
 	let tile = tileMap.children[tileIndex];
 	if(isHighlighting) {
 		if(!highlightedTileData.has(tile))
@@ -125,4 +142,58 @@ function drawRectangle(x1, y1, x2, y2) {
 	drawLine(x2, y1, x2, y2);
 	drawLine(x1, y2, x2, y2);
 	drawLine(x1, y1, x1, y2);
+}
+
+function drawCircle(x1, y1, x2, y2) {
+	var r = Math.round(Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)));
+	for(var i = x1 - r; i <= x1 + r; i++) {
+		var yPos = Math.round(y1 + Math.sqrt(Math.pow(r, 2) - Math.pow((x1 - i), 2)));
+		var yNeg = Math.round(y1 - Math.sqrt(Math.pow(r, 2) - Math.pow((x1 - i), 2)));
+		if(yPos == yNeg) {
+			paintTile(i, yPos);	
+		} else {
+			paintTile(i, yPos);
+			paintTile(i, yNeg);
+		}
+	}
+	for(var i = y1 - r; i <= y1 + r; i++) {
+		var xPos = Math.round(x1 + Math.sqrt(Math.pow(r, 2) - Math.pow((y1 - i), 2)));
+		var xNeg = Math.round(x1 - Math.sqrt(Math.pow(r, 2) - Math.pow((y1 - i), 2)));
+		if(xPos == xNeg) {
+			paintTile(xPos, i);	
+		} else {
+			paintTile(xPos, i);
+			paintTile(xNeg, i);
+		}
+	}
+}
+
+function drawFillCircle(x1, y1, x2, y2) {
+	var r = Math.round(Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)));
+	for(var i = x1 - r; i <= x1 + r; i++) {
+		var yPos = Math.round(y1 + Math.sqrt(Math.pow(r, 2) - Math.pow((x1 - i), 2)));
+		var yNeg = Math.round(y1 - Math.sqrt(Math.pow(r, 2) - Math.pow((x1 - i), 2)));
+		if(yPos == yNeg) {
+			paintTile(i, yPos);	
+		} else {
+			drawLine(i, yPos, i, yNeg);
+		}
+	}
+	for(var i = y1 - r; i <= y1 + r; i++) {
+		var xPos = Math.round(x1 + Math.sqrt(Math.pow(r, 2) - Math.pow((y1 - i), 2)));
+		var xNeg = Math.round(x1 - Math.sqrt(Math.pow(r, 2) - Math.pow((y1 - i), 2)));
+		if(xPos == xNeg) {
+			paintTile(xPos, i);	
+		} else {
+			drawLine(xPos, i, xNeg, i);
+		}
+	}
+}
+
+function drawFillRectangle(x1, y1, x2, y2) {
+	var bigY = (y2 > y1) ? y2 : y1;
+	var smallY = (y2 > y1) ? y1 : y2;
+	for(var i = smallY; i <= bigY; i++) {
+		drawLine(x1, i, x2, i);
+	}
 }
