@@ -38,6 +38,13 @@
 .vw-65 {
 	width: 65vw;
 }
+aside.sidebar.vw-25 {
+	width: 25vw;
+}
+
+.vh-100 {
+	height: 100vh;
+}
 
 .overflow-ellipsis {
 	max-width: 100%;
@@ -61,4 +68,12 @@
 
 .va-text-center {
 	vertical-align: center;
+}
+
+.d-flex-row {
+	flex-direction: row;
+}
+
+.d-flex {
+	display: flex;
 }

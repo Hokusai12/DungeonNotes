@@ -4,6 +4,7 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
+	<th:block th:insert="~{@{/faviconTemplate} :: favicon}"></th:block>
 	<script src="https://kit.fontawesome.com/e6f5881f14.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" th:href="@{css/style.css}" />
 	<link rel="stylesheet" th:href="@{/css/world.css}" />
@@ -27,6 +28,7 @@
 					<div class="folder-structure" th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${folder})}"></div>
 				</th:block>
 			</div>
+			<a class="btn" th:href="@{|/world/tile-map-creator?world-id=${world.id}|}">Tile Map</a>
 			<button id="add-folder-btn">Add Folder</button>
 		</aside>
 		<div class="container text-editor-container">

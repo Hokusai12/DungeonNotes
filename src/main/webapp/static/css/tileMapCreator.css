@@ -1,0 +1,17 @@
+#tile-map {
+	background: black;
+	font-size: 0;
+}
+#viewport {
+	width: 75%;
+	height: 100%;
+	overflow: auto;
+}
+
+div.tile {
+	display: inline-block;
+	background-color: white;
+	width: 25px;
+	height: 25px;
+	margin: 1px;
+}

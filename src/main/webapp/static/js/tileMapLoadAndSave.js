@@ -2,6 +2,9 @@ var tileMapDiv = document.querySelector("#tile-map");
 var saveForm = document.querySelector("#save-map");
 
 function initTileGrid() {
+	var gridWidth = Number.parseInt(tileMapDiv.getAttribute("data-width"));
+	tileMapDiv.style.width = (gridWidth * 27).toString() + "px";
+	
 	for(var i = 0; i < tileMapDiv.children.length; i++) {
 		var tileType = Number.parseInt(tileMapDiv.children[i].getAttribute("data-tile-type"));
 		if(tileType == 1) {
@@ -53,34 +56,25 @@ function getTileData() {
 	return tileData;
 }
 
+function createFormInput(type, name, value) {
+	var formInput = document.createElement("input");
+	formInput.setAttribute("type", type);
+	formInput.setAttribute("name", name);
+	formInput.setAttribute("value", value);
+	return formInput;
+}
+
 function onSaveTileMap() {
 	var params = new URLSearchParams(document.location.search);
 	console.log(document.location.search);
 
-	var worldIdInput = document.createElement("input");
-	worldIdInput.setAttribute("type", "hidden");
-	worldIdInput.setAttribute("name", "worldId");
-	worldIdInput.setAttribute("value", params.get("world-id"));
-	console.log(params.get("world-id"))
-	
-	var tileMapIdInput = document.createElement("input");
-	tileMapIdInput.setAttribute("type", "hidden");
-	tileMapIdInput.setAttribute("name", "tileMapId");
-	tileMapIdInput.setAttribute("value", parseInt(params.get("tile-map-id")));
-	console.log(params.get("tile-map-id"))
-	
-	var mapWidthInput = document.createElement("input");
-	mapWidthInput.setAttribute("type", "hidden");
-	mapWidthInput.setAttribute("name", "mapWidth");
-	mapWidthInput.setAttribute("value", "50");
+	var worldIdInput = createFormInput("hidden", "worldId", params.get("world-id"));
+	var tileMapIdInput = createFormInput("hidden", "tileMapId", Number.parseInt(params.get("tile-map-id")));
+	var mapWidthInput = createFormInput("hidden", "mapWidth", "50");
 		
 	var tileData = getTileData();
-	console.log(tileData);
 	
-	var	tileDataInput = document.createElement("input");
-	tileDataInput.setAttribute("type", "hidden");
-	tileDataInput.setAttribute("name", "tileData");
-	tileDataInput.setAttribute("value", tileData.toString());
+	var	tileDataInput = createFormInput("hidden", "tileData", tileData.toString());
 	
 	saveForm.appendChild(worldIdInput);
 	saveForm.appendChild(tileDataInput);

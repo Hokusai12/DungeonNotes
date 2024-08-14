@@ -4,35 +4,28 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8" />
+	<th:block th:insert="~{@{/faviconTemplate} :: favicon}"></th:block>
 	<link rel="stylesheet" th:href="@{/css/style.css}" />	
-	<style th:inline="css">
-		div#tile-map {
-			width: [[${tileMap.width * 27}]]px;
-			height: [[${#arrays.length(tileMapData) / tileMap.width * 27}]]px;
-			background-color: black;
-			display: flex;
-			flex-wrap: wrap;
-		}
-		
-		div.tile {
-			background-color: white;
-			width: 25px;
-			height: 25px;
-			margin: 1px;
-		}
-	</style>
+	<link rel="stylesheet" th:href="@{/css/tileMapCreator.css}" />
+	<link rel="stylesheet" th:href="@{/css/utils.css}" />
 	<title>Dungeon Notes</title>
 </head>
 <body>
-
-	<div id="tile-map" th:attr="data-width=${tileMap.width}" onclick="onTileMapClick(event)">
-		<div class="tile" th:each="tileData : ${tileMapData}" th:attr="data-tile-type=${tileData}"></div>	
+	<div class="d-flex d-flex-row vh-100">
+		<div id="viewport">
+			<div id="tile-map" th:attr="data-width=${tileMap.width}" onclick="onTileMapClick(event)">
+				<div class="tile" th:each="tileData : ${tileMapData}" th:attr="data-tile-type=${tileData}"></div>	
+			</div>
+		</div>
+		<aside class="vw-25 sidebar">
+			<form id="save-map" action="/world/save-tile-map" method="POST">
+				<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
+				<input type="submit" value="Save Changes"/>
+			</form>
+		</aside>
 	</div>
-	<form id="save-map" action="/world/save-tile-map" method="POST">
-		<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
-		<input type="submit" value="Save Changes"/>
-	</form>
 	<script type="text/javascript" th:src="@{/js/tileMapTools.js}"></script>
 	<script type="text/javascript" th:src="@{/js/tileMapLoadAndSave.js}"></script>
+	<script type="text/javascript" th:src="@{/js/tileMapCamera.js}"></script>
 </body>
 </html>

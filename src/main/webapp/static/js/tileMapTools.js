@@ -1,4 +1,6 @@
 var tileMap = document.querySelector("#tile-map");
+var tileWidth = document.querySelectorAll("div.tile").item(0).clientWidth + 2; //All math in this file needs to account for the margins as well.
+var viewport = document.getElementById("viewport");
 
 const Brushes = Object.freeze({
 	HIGHLIGHT: "gray",
@@ -34,27 +36,44 @@ function clearMouseGridPoints() {
 	MouseGridPoints.y2 = 0;
 }
 
+function getCurrentMouseGridPoint(mouseEvent) { //Returns an array of two position values (x, y)
+	var mouseXTileMap = mouseEvent.clientX + viewport.scrollLeft;
+	var mouseYTileMap = mouseEvent.clientY + viewport.scrollTop;
+	console.log(`Scroll Left: ${viewport.scrollLeft}\nScroll Top: ${viewport.scrollTop}`);
+	let tileMapWidth = Number.parseInt(tileMap.style.width);
+	let tileMapHeight = Number.parseInt(tileMap.style.height);
+	
+	if(mouseXTileMap > tileMapWidth || mouseYTileMap > tileMapHeight) {
+		return [0, 0];
+	}
+	
+	let mouseXGrid = Math.floor(mouseXTileMap / tileWidth);
+	let mouseYGrid = Math.ceil(mouseYTileMap / tileWidth);
+	return [mouseXGrid, mouseYGrid];
+}
+
 //EventListeners
 
 function onMouseMovesOverGrid(event) {
+	tileWidth = document.querySelectorAll("div.tile").item(0).clientWidth + 2;
 	if(isDrawing) {
 		clearHighlightedTiles();
-		let relativeX = (event.clientX > Number.parseInt(tileMap.style.width)) ? Number.parseInt(tileMap.style.width) : event.clientX;
-		let relativeY = (event.clientY > Number.parseInt(tileMap.style.height)) ? Number.parseInt(tileMap.style.height) : event.clientY;
-		MouseGridPoints.x2 = Math.floor(relativeX / 27);
-		MouseGridPoints.y2 = Math.ceil(relativeY / 27);
+		let mouseGridPoint = getCurrentMouseGridPoint(event);
+		MouseGridPoints.x2 = mouseGridPoint[0];
+		MouseGridPoints.y2 = mouseGridPoint[1];
 		drawUsingTool();
 	}
 }
 
 function onTileMapClick(event) {
+	tileWidth = document.querySelectorAll("div.tile").item(0).clientWidth + 2;
 	isHighlighting = !isHighlighting;
 	isDrawing = true;
 	if(isHighlighting) {
-		relativeX = (event.clientX > Number.parseInt(tileMap.style.width)) ? Number.parseInt(tileMap.style.width) : event.clientX;
-		relativeY = (event.clientY > Number.parseInt(tileMap.style.height)) ? Number.parseInt(tileMap.style.height) : event.clientY;
-		MouseGridPoints.x1 = Math.floor(relativeX / 27);
-		MouseGridPoints.y1 = Math.ceil(relativeY / 27);
+		let mouseGridPoint = getCurrentMouseGridPoint(event);
+		MouseGridPoints.x1 = mouseGridPoint[0];
+		MouseGridPoints.y1 = mouseGridPoint[1];
+		console.log(`Grid Mouse Pos: (${mouseGridPoint[0]}, ${mouseGridPoint[1]})`);
 		paintTile(MouseGridPoints.x1, MouseGridPoints.y1);
 	} else {
 		onMouseMovesOverGrid(event);
@@ -101,7 +120,9 @@ function paintTile(x, y) {
 	if(tileIndex < 0 
 		|| tileIndex > tileMap.children.length
 		|| x > gridWidth - 1
-		|| x < 0) {
+		|| x < 0
+		|| y < 0
+		|| y > (tileMap.children.length / gridWidth)) {
 		return;
 	}
 	

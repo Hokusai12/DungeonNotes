@@ -57,6 +57,7 @@ public class SpringWebConfig
         registry.addResourceHandler("/css/**").addResourceLocations("static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("static/js/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("static/fonts/");
+        registry.addResourceHandler("/*").addResourceLocations("static/favicon/");
     }
 
     @Bean
