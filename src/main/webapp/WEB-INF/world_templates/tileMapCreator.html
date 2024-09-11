@@ -20,8 +20,25 @@
 		<aside class="vw-25 sidebar">
 			<form id="save-map" action="/world/save-tile-map" method="POST">
 				<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
-				<input type="submit" value="Save Changes"/>
 			</form>
+			<div id="grid-details">
+				<input id="gridWidthInput" type="number"/>
+				<input id="gridHeightInput" type="number"/>
+				<input id="zoomInput" type="number" value="1.0" step="0.2" min="0.2"/>
+			</div>
+			<select name="toolSelect" id="toolSelect">
+				<option value="SINGLE">Single</option>
+				<option value="LINE">Line</option>
+				<option value="RECT">Rectangle</option>
+				<option value="CIRC">Circle</option>
+				<option value="FILLRECT">Filled Rectangle</option>
+				<option value="FILLCIRC">Filled Circle</option>
+			</select>
+			
+			<select name="brushSelect" id="brushSelect">
+			</select>
+			
+			<input type="submit" value="Save Changes" form="save-map"/>
 		</aside>
 	</div>
 	<script type="text/javascript" th:src="@{/js/tileMapTools.js}"></script>

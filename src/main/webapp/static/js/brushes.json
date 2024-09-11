@@ -1,0 +1,29 @@
+{
+	"brushes":
+		[
+			{
+				"index": 0,
+				"name": "Erase",
+				"xPos": 225,
+				"yPos": 225
+			},
+			{
+				"index": 1,
+				"name": "Highlight",
+				"xPos": 200,
+				"yPos": 225
+			},
+			{ 
+				"index": 2,
+				"name": "Wood Floor",
+				"xPos": 0,
+				"yPos": 0
+			},
+			{
+				"index": 3,
+				"name": "Cobblestone",
+				"xPos": 25,
+				"yPos": 0
+			}
+		]
+}

@@ -226,7 +226,7 @@ form label {
 	font-size: 20px;
 }
 
-form input, form select {
+form input, form select, input, select {
 	height: 30px;
 	border-radius: 5px;
 	border: none;

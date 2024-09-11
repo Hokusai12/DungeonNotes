@@ -45,31 +45,20 @@ public class TileMapService {
 	public List<Integer> getStretchedTileMapData(List<byte[]> truncatedData) {
 		List<Integer> stretchedData = new ArrayList<Integer>();
 		
-		System.out.println("Stretching...");
-		for(byte[] data : truncatedData) {
-			System.out.print("{");
-			for(byte dataBits : data) {
-				System.out.print(dataBits + ", ");
-			}
-			System.out.print("}, ");
-		}
-		
-		System.out.println("Checking");
-		
 		for(int currentIndex = 0; currentIndex < truncatedData.size(); currentIndex++) {
-			System.out.print("{");
 			int currentTileType = truncatedData.get(currentIndex)[0];
 			int tileAmountLeftByte = truncatedData.get(currentIndex)[1];
 			int tileAmountRightByte = truncatedData.get(currentIndex)[2];
+			
 			if(tileAmountLeftByte < 0) {
 				tileAmountLeftByte = (tileAmountLeftByte & 127) + 128;
 			}
+			
 			if(tileAmountRightByte < 0) {
 				tileAmountRightByte = (tileAmountRightByte & 127) + 128;
 			}
+			
 			int tileAmount = (tileAmountLeftByte << 8) | tileAmountRightByte;
-			System.out.print(currentTileType + ", ");
-			System.out.print(tileAmount  + "}, ");
 			for(int i = 0; i < tileAmount; i++) {
 				stretchedData.add(currentTileType);
 			}

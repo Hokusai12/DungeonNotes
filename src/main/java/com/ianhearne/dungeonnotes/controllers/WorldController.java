@@ -214,28 +214,20 @@ public class WorldController {
 		Long worldId = Long.parseLong(formData.get("worldId"));
 		TileMap tileMap;
 		
-		System.out.println(formData.get("tileData"));
-		
 		//Converts the string of array data from the form to a list of integer data to store in the db
 		String[] mapDataString = formData.get("tileData").split(",");
 		List<byte[]> newTileMapData = new ArrayList<byte[]>();
+		
+		
 
 		for(int i = 0; i < mapDataString.length; i++) {
 			byte tileType = Byte.parseByte(mapDataString[i]);
-			int dataValue = Integer.parseInt(mapDataString[i + 1]);
-			byte leftHalf;
-			byte rightHalf;
-			if(dataValue > 1 ) {
-				leftHalf = (byte)((dataValue & -256) >> 8);
-				rightHalf = (byte)(dataValue & -1);
-				i++;
-			}
-			else {
-				leftHalf = 0;
-				rightHalf = 1;
-			}
+			int tileCount = Integer.parseInt(mapDataString[i + 1]);
+			byte leftHalf = (byte)((tileCount & -256) >> 8);
+			byte rightHalf = (byte)(tileCount & -1);
 			byte[] tileData = {tileType, leftHalf, rightHalf};
 			newTileMapData.add(tileData);
+			i++;
 		}
 		
 		

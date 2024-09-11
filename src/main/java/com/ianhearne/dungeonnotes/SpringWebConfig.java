@@ -52,12 +52,12 @@ public class SpringWebConfig
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/images/**").addResourceLocations("static/images/");
+        registry.addResourceHandler("/imgs/**").addResourceLocations("static/imgs/");
         registry.addResourceHandler("/icons/**").addResourceLocations("static/icons/");
         registry.addResourceHandler("/css/**").addResourceLocations("static/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("static/js/");
         registry.addResourceHandler("/fonts/**").addResourceLocations("static/fonts/");
-        registry.addResourceHandler("/*").addResourceLocations("static/favicon/");
+        registry.addResourceHandler("/favicon/**").addResourceLocations("static/favicon/");
     }
 
     @Bean
