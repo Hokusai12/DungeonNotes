@@ -23,6 +23,11 @@ public class WorldService {
 		rootFolder.setName(newWorld.getName());
 		folderService.saveFolder(rootFolder);
 		
+		Folder tileMapFolder = new Folder();
+		tileMapFolder.setName("Tile Maps");
+		tileMapFolder.setParentFolder(rootFolder);
+		folderService.saveFolder(tileMapFolder);
+		
 		newWorld.setRootFolder(rootFolder);
 	
 		return worldRepo.save(newWorld);

@@ -33,8 +33,8 @@
 		</aside>
 		<div class="container text-editor-container">
 			<nav class="navbar top-rounded-15">
-					<h1 id="article-name" class="overflow-ellipsis" th:if="${selectedArticle} != null" th:text="${selectedArticle.title}"></h1>
-					<h1 id="world-name" class="overflow-ellipsis" th:unless="${selectedArticle} != null" th:text="${world.name}"></h1>
+					<h1 id="article-name" style="text-wrap: wrap; overflow-wrap: break-word;" th:if="${selectedArticle} != null" th:text="${selectedArticle.title}"></h1>
+					<h1 id="world-name" style="text-wrap: wrap; overflow-wrap: break-word;" th:unless="${selectedArticle} != null" th:text="${world.name}"></h1>
 					<i id="world-settings-btn" class="fa-solid fa-gear"></i>
 			</nav>
 			<div class="content bg-dark-blue bottom-rounded-15">

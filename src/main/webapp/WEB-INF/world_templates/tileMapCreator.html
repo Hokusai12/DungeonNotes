@@ -5,6 +5,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<th:block th:insert="~{@{/faviconTemplate} :: favicon}"></th:block>
+	<script src="https://kit.fontawesome.com/e6f5881f14.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" th:href="@{/css/style.css}" />	
 	<link rel="stylesheet" th:href="@{/css/tileMapCreator.css}" />
 	<link rel="stylesheet" th:href="@{/css/utils.css}" />
@@ -22,21 +23,39 @@
 				<input type="text" name="mapName" placeholder="Map name...." th:attr="value=${tileMap.name}"/>
 			</form>
 			<div id="grid-details">
-				<input id="gridWidthInput" type="number"/>
-				<input id="gridHeightInput" type="number"/>
-				<input id="zoomInput" type="number" value="1.0" step="0.2" min="0.2"/>
+				<div class="grid-alter-div">
+					<p>Grid Dimensions</p>
+					<label for="grid-dims-x">X:</label>				
+					<input name="grid-dims-x" id="gridWidthInput" type="number"/>
+					<label for="grid-dims-y">Y:</label>
+					<input name="grid-dims-y" id="gridHeightInput" type="number"/>
+				</div>
+				<div class="grid-alter-div">
+					<label for="zoomInput">Zoom:</label>
+					<input name="zoomInput" id="zoomInput" type="number" value="1.0" step="0.1" min="0.2"/>
+				</div>
 			</div>
-			<select name="toolSelect" id="toolSelect">
-				<option value="SINGLE">Single</option>
-				<option value="LINE">Line</option>
-				<option value="RECT">Rectangle</option>
-				<option value="CIRC">Circle</option>
-				<option value="FILLRECT">Filled Rectangle</option>
-				<option value="FILLCIRC">Filled Circle</option>
-			</select>
-			
+			<div id="tool-button-div">
+				<button id="circle-button" class="tool-button"><i class="fa-regular fa-circle"></i></button>
+				<button id="filled-circle-button" class="tool-button"><i class="fa-solid fa-circle"></i></button>
+				<button id="rectangle-button" class="tool-button"><i class="fa-regular fa-square"></i></button>
+				<button id="filled-rectangle-button" class="tool-button selected"><i class="fa-solid fa-grip"></i></button>
+				<button id="single-button" class="tool-button"><i class="fa-solid fa-square"></i></button>
+				<button id="line-button" class="tool-button"><i class="fa-solid fa-slash"></i></button>
+			</div>
 			<select name="brushSelect" id="brushSelect">
 			</select>
+			<div id="brush-select-div">
+				<details id="standard" open="">
+					<summary>Standard</summary>
+				</details>
+				<details id="natural">
+					<summary>Natural</summary>
+				</details>
+				<details id="special">
+					<summary>Special</summary>
+				</details>
+			</div>
 			
 			<input type="submit" value="Save Changes" form="save-map"/>
 		</aside>

@@ -192,7 +192,7 @@ public class WorldController {
 		if(tileMap == null) {
 			tileMap = new TileMap();
 			tileMap.setWidth(50);
-			tileMapData = tileMapService.getBlankTileMapData(tileMap.getWidth(), 25);
+			tileMapData = tileMapService.getBlankTileMapData(tileMap.getWidth(), 50);
 		}
 		else {
 			tileMapData = tileMapService.getStretchedTileMapData(tileMap.getTileMapData());

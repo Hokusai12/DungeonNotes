@@ -1,6 +1,7 @@
 package com.ianhearne.dungeonnotes.models;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -38,6 +40,9 @@ public class World {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User creator;
+	
+	@OneToMany(mappedBy="world", cascade=CascadeType.REMOVE)
+	private List<TileMap> tileMaps;
 	
 	@Column(updatable=false)
 	private Date createdAt;
@@ -107,5 +112,13 @@ public class World {
 	
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<TileMap> getTileMaps() {
+		return tileMaps;
+	}
+
+	public void setTileMaps(List<TileMap> tileMaps) {
+		this.tileMaps = tileMaps;
 	}
 }

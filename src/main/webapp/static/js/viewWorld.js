@@ -164,9 +164,6 @@ function onMouseOutInPopupDiv(e) {
 }
 
 function onWorldSettingsClick(e) {
-	
-	var fontSize = parseFloat(getComputedStyle(worldSettingsBtn).fontSize);
-		
 	var vpWidth = window.visualViewport.width;
 	var vpHeight = window.visualViewport.height;
 	

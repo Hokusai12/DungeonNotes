@@ -11,7 +11,7 @@ const Tools = Object.freeze({
 
 const DrawData = {
 	currentBrush: 0,
-	currentTool: Tools.LINE,
+	currentTool: Tools.FILLRECT,
 	highlightedTileData: new Map(),
 	MouseGridPoints: {
 			x1: 0,
@@ -24,9 +24,9 @@ const DrawData = {
 }
 
 function initializeToolsAndBrushes() {	
-	const toolInput = document.getElementById("toolSelect");
-	const brushInput = document.getElementById("brushSelect");
+	const toolButtonDiv = document.getElementById("tool-button-div");
 	const tileMap = document.getElementById("tile-map");
+	const brushSelectDiv = document.getElementById("brush-select-div");
 	const brushesHttpRequest = new XMLHttpRequest();
 	
 	brushesHttpRequest.responseType = "json";
@@ -37,33 +37,67 @@ function initializeToolsAndBrushes() {
 		const jsonResponse = brushesHttpRequest.response;
 		for(const brush of jsonResponse.brushes) {
 			BrushData.push(brush);
+			if(brush.index == 2) {
+				DrawData.currentBrush = brush;
+			}
 		}
 		initTileTextures();
 		initBrushSelect();
 	};
-	toolInput.addEventListener("change", onToolInputUpdate);
-	brushInput.addEventListener("change", onBrushUpdate);
+	
+	for(let i = 0; i < toolButtonDiv.children.length; i++) {
+		toolButtonDiv.children[i].addEventListener("click", updateToolSelection);
+	}
+	
 	tileMap.addEventListener("mousemove", onMouseMovesOverGrid);
-	onToolInputUpdate();
 }
+
 
 function getTileWidthWithMargin() {
 	const tile = document.querySelectorAll("div.tile").item(0);
 	return tile.clientWidth + 2;
 }
 
+function createBrushThumbnail(brush) {
+	const brushThumbnail = document.createElement("span");
+	brushThumbnail.id = brush.index;
+	brushThumbnail.classList.add("tile");
+	brushThumbnail.style.backgroundPosition = `-${brush.xPos}px -${brush.yPos}px`;
+	brushThumbnail.addEventListener("click", () => {onBrushUpdate(event)});
+	if(brush.index == 2) {
+		brushThumbnail.classList.add("box-shadow");
+	}
+	return brushThumbnail;
+}
+
 function initBrushSelect() {
-	const brushInput = document.getElementById("brushSelect");
+	const brushDiv = document.getElementById("brush-select-div");
 	for(const brush of BrushData) {
-		if(brush.name == "Highlight") {
+		if(brush.index == 1) {
 			continue;
 		}
-		const option = document.createElement("option");
-		option.setAttribute("value", brush.index);
-		option.innerText = brush.name;
-		brushInput.appendChild(option);
+		
+		let brushCategoryNode = null;
+		for(let i = 0; i < brushDiv.children.length; i++) {
+			if(brush.category == brushDiv.children[i].id) {
+				brushCategoryNode = brushDiv.children[i];
+			}
+		}
+		const brushThumbnail = createBrushThumbnail(brush);
+		brushCategoryNode.appendChild(brushThumbnail);
 	}
-	onBrushUpdate();
+}
+
+function onBrushUpdate(event) {
+	const selectedBrushThumbnail = event.currentTarget;
+	const currentBrushSpan = document.getElementById(`${DrawData.currentBrush.index}`);
+	for(const brush of BrushData) {
+		if(selectedBrushThumbnail.id == brush.index) {
+			DrawData.currentBrush = brush;
+		}
+	}
+	currentBrushSpan.classList.remove("box-shadow");
+	selectedBrushThumbnail.classList.add("box-shadow");
 }
 
 function initTileTextures() {
@@ -99,26 +133,30 @@ function getCurrentMouseGridPoint(mouseEvent) { //Returns an array of two positi
 
 //EventListeners
 
-function onToolInputUpdate() {
-	const toolInput = document.getElementById("toolSelect");
-	switch(toolInput.value) {
-		case "SINGLE":
-			DrawData.currentTool = Tools.SINGLE;
-			break;
-		case "LINE":
-			DrawData.currentTool = Tools.LINE;
-			break;
-		case "RECT":
-			DrawData.currentTool = Tools.RECT;
-			break;
-		case "CIRC":
+function updateToolSelection(event) {
+	const selectedButton = event.currentTarget;
+	const oldSelectedButton = document.querySelectorAll("button.selected")[0];
+	oldSelectedButton.classList.remove("selected");
+	selectedButton.classList.add("selected");
+	
+	switch(selectedButton.id) {
+		case "circle-button":
 			DrawData.currentTool = Tools.CIRC;
 			break;
-		case "FILLRECT":
+		case "filled-circle-button":
+			DrawData.currentTool = Tools.FILLCIRC;
+			break;
+		case "rectangle-button":
+			DrawData.currentTool = Tools.RECT;
+			break;
+		case "filled-rectangle-button":
 			DrawData.currentTool = Tools.FILLRECT;
 			break;
-		case "FILLCIRC":
-			DrawData.currentTool = Tools.FILLCIRC;
+		case "single-button":
+			DrawData.currentTool = Tools.SINGLE;
+			break;
+		case "line-button":
+			DrawData.currentTool = Tools.LINE;
 			break;
 		default:
 			DrawData.currentTool = Tools.LINE;
@@ -281,6 +319,7 @@ function drawCircle(x1, y1, x2, y2) {
 }
 
 function drawFillCircle(x1, y1, x2, y2) {
+	
 	const r = Math.round(Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2)));
 	for(let i = x1 - r; i <= x1 + r; i++) {
 		const yPos = Math.round(y1 + Math.sqrt(Math.pow(r, 2) - Math.pow((x1 - i), 2)));
@@ -308,12 +347,6 @@ function drawFillRectangle(x1, y1, x2, y2) {
 	for(let i = smallY; i <= bigY; i++) {
 		drawLine(x1, i, x2, i);
 	}
-}
-
-
-function onBrushUpdate() {
-	const brushIndex = document.getElementById("brushSelect").value;
-	DrawData.currentBrush = BrushData[brushIndex];
 }
 
 initializeToolsAndBrushes();

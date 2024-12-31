@@ -40,16 +40,13 @@ summary {
 
 summary .summary-left {
 	width: 75%;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	text-wrap: wrap;
+	overflow-wrap: break-word;
 }
 
 .folder-name {
-	
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	text-wrap: wrap;
+	overflow-wrap: break-word;
 }
 
 i.fa-ellipsis-vertical {
@@ -70,19 +67,19 @@ summary:hover i.fa-ellipsis-vertical {
 details div.folder-content {
 	margin-left: 10px;
 	width: 100%;
+	text-wrap: wrap;
+	overflow-wrap: break-word;
 }
 
 div.folder-content a {
 	font-size: max(6px, 0.8em);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	text-wrap: wrap;	
+	overflow-wrap: break-word;
 }
 
 details summary, details div.folder-content {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	text-wrap: wrap;
+	overflow-wrap: break-word;
 }
 
 .main-world-container {
