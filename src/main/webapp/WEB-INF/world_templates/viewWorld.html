@@ -20,12 +20,11 @@
 		</div>
 	</nav>
 	<div class="main-world-container">
-		<!-- Fragment that recursively displays the folder structure -->
 		<aside class="sidebar">
 			<div>
 				<h4><a th:href="@{|/world?world-id=${world.id}|}" th:text="${world.name}"></a></h4>
 				<th:block th:each="folder : ${world.rootFolder.childFolders}">
-					<div class="folder-structure" th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${folder})}"></div>
+					<th:block th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${folder})}"></th:block>
 				</th:block>
 			</div>
 			<a class="btn" th:href="@{|/world/tile-map-creator?world-id=${world.id}|}">Tile Map</a>
@@ -39,13 +38,6 @@
 			</nav>
 			<div class="content bg-dark-blue bottom-rounded-15">
 				<p th:if="${selectedArticle} == null" class="world-desc" th:text="${world.description}"></p>
-<!-- 				<form th:if="${selectedArticle} != null" action="#" th:action="@{|/world/article/update?world-id=${world.id}&article-id=${selectedArticle.id}|}" th:method="put" th:object="${selectedArticle}"> -->
-<!-- 					<input type="hidden" th:field="*{id}"/> -->
-<!-- 					<input type="hidden" th:field="*{title}"/> -->
-<!-- 					<input type="hidden" th:field="*{folder}"/> -->
-<!-- 					<textarea class="text-editor" name="article-content" id="article-content" th:field="*{text}"></textarea> -->
-<!-- 					<input class="btn" type="submit" value="Save Changes"/> -->
-<!-- 				</form> -->
 				<div th:if="${selectedArticle} != null" class="text-editor-div">
 					<p id="text-editor" contenteditable="true" spellcheck="false" th:text="${selectedArticle.text}"></p>
 					<form id="update-article-form" action="#" th:action="@{|/world/article/update?world-id=${world.id}&article-id=${selectedArticle.id}|}" th:method="put" th:object="${selectedArticle}">
@@ -57,32 +49,6 @@
 					</form>
 				</div>
 			</div>
-			<!--
-			<form action="#" th:action="@{|/world/${world.id}/update|}" th:method="put" th:object="${world}">
-				<input type="hidden" th:field="*{id}"/>
-				<input type="hidden" th:field="*{rootFolder}"/>
-				<p class="input-error" th:if="${#fields.hasErrors('*')}" th:errors="*{*}"></p>
-				<input type="text" th:field="*{name}"/>
-				<button>Change Name</button>
-			</form>
-			  -->
-			<!-- Delete Form
-			<form action="#" th:action="@{|/world/delete?world-id=${world.id}|}" th:method="delete">
-				<button>Delete World</button>
-			</form>
-			 -->
-	
-			<!-- 
-			<div id="add-folder">
-				<form action="#" th:action="@{|/world/${world.id}/add-folder|}" th:method="post" th:object="${newFolder}">
-					<input type="hidden" th:field="*{id}"/>
-					<select th:field="*{parentFolder}" th:insert="~{@{/world_templates/selectFile} :: selectFolder (${world.rootFolder})}"></select>
-					<p class="input-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
-					<input type="text" th:field="*{name}" value=""/>
-					<button>Add Folder</button>
-				</form>
-			</div> 
-			-->
 		</div>
 	</div>
 	<div id="add-article-hidden-div" class="hidden-div">

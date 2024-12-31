@@ -25,14 +25,16 @@
 			<div id="grid-details">
 				<div class="grid-alter-div">
 					<p>Grid Dimensions</p>
-					<label for="grid-dims-x">X:</label>				
-					<input name="grid-dims-x" id="gridWidthInput" type="number"/>
-					<label for="grid-dims-y">Y:</label>
-					<input name="grid-dims-y" id="gridHeightInput" type="number"/>
+					<div style="width: inherit">
+						<label for="grid-dims-x">X:</label>				
+						<input name="grid-dims-x" id="gridWidthInput" type="number"/>
+						<label for="grid-dims-y">Y:</label>
+						<input name="grid-dims-y" id="gridHeightInput" type="number"/>
+					</div>
 				</div>
 				<div class="grid-alter-div">
 					<label for="zoomInput">Zoom:</label>
-					<input name="zoomInput" id="zoomInput" type="number" value="1.0" step="0.1" min="0.2"/>
+					<input name="zoomInput" id="zoomInput" type="number" value="1.0" step="0.05" min="0.2"/>
 				</div>
 			</div>
 			<div id="tool-button-div">
@@ -43,8 +45,6 @@
 				<button id="single-button" class="tool-button"><i class="fa-solid fa-square"></i></button>
 				<button id="line-button" class="tool-button"><i class="fa-solid fa-slash"></i></button>
 			</div>
-			<select name="brushSelect" id="brushSelect">
-			</select>
 			<div id="brush-select-div">
 				<details id="standard" open="">
 					<summary>Standard</summary>

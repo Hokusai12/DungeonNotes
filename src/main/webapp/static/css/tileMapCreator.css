@@ -31,10 +31,21 @@ form#save-map input, .grid-alter-div input {
 	background-color: #000b11;
 	color: var(--vanilla);
 }
+
+#grid-details {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 	
 .grid-alter-div {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	
 	margin: 0px auto;
-	width: 50%;
+	width: 75%;
 }
 
 .grid-alter-div input {
@@ -57,5 +68,6 @@ i {
 
 .box-shadow {
 	margin: 0px 4px;
+	border: 1px solid yellow;
 	box-shadow: 3px 3px black;
 }

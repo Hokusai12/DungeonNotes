@@ -8,7 +8,6 @@ var updateArticleForm = document.querySelector("#update-article-form");
 var summaryLeftSpanElements = document.querySelectorAll("span.summary-left");
 var ellipsisIcons = document.querySelectorAll("i.fa-ellipsis-vertical");
 
-
 function getUrlQueryParameters() {
 	var urlParamString = window.location.href.split("?")[1];
 	var urlParamMap = new Map();
