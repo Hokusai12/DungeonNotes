@@ -26,8 +26,22 @@
 				<th:block th:each="folder : ${world.rootFolder.childFolders}">
 					<th:block th:insert="~{@{/world_templates/fileStructure} :: folderStructure (${folder})}"></th:block>
 				</th:block>
+				<hr>
+				<div id="standard-folders-div">
+					<details>
+						<summary>
+							<span class="summary-left">
+								<i class="fa-solid fa-caret-right"></i>
+								<span class="folder-name">Tile Maps</span>
+							</span>
+							<i class="fa-solid fa-ellipsis-vertical" id="tile-maps-ellipsis"></i>
+						</summary>
+							<div class="folder-content">
+								<a  th:each="tileMap : ${world.tileMaps}" th:href="@{|/world/tile-map-creator?world-id=${world.id}&tile-map-id=${tileMap.id}|}" th:text="${tileMap.name}" style="display: block"></a>
+							</div>
+					</details>
+				</div>
 			</div>
-			<a class="btn" th:href="@{|/world/tile-map-creator?world-id=${world.id}|}">Tile Map</a>
 			<button id="add-folder-btn">Add Folder</button>
 		</aside>
 		<div class="container text-editor-container">

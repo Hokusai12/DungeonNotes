@@ -106,6 +106,7 @@ public class WorldController {
 		World dbWorld = worldService.getWorldById(worldId);
 		
 		dbWorld.setName(formData.get("name"));
+		dbWorld.getRootFolder().setName(formData.get("name"));
 		
 		worldService.updateWorld(dbWorld);
 		
@@ -197,6 +198,7 @@ public class WorldController {
 		else {
 			tileMapData = tileMapService.getStretchedTileMapData(tileMap.getTileMapData());
 		}
+		model.addAttribute("worldId", worldId);
 		model.addAttribute("tileMap", tileMap);
 		model.addAttribute("tileMapData", tileMapData);
 		

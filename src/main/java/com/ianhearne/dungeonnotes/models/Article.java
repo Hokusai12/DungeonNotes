@@ -35,6 +35,7 @@ public class Article {
 	@NotEmpty(message="Title required")
 	@Size(min=3, max=255, message="Article title must be 3-255 characters")
 	private String title;
+	
 	private String text;
 	
 	@ManyToOne(fetch=FetchType.LAZY)

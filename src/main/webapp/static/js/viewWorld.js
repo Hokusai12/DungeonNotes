@@ -137,8 +137,15 @@ function onSummaryClick(e) {
 	}
 };
 
+function redirectTo(destinationHref) {
+	const anchorTag = document.createElement("a");
+	document.body.appendChild(anchorTag);
+	anchorTag.href = destinationHref;
+	anchorTag.click();
+}
+
 function createPopUpOption(text, onClick) {
-	var opt = document.createElement("p");
+	const opt = document.createElement("p");
 	opt.innerText = text;
 	opt.classList.add("popup-opt");
 	opt.addEventListener("click", onClick);
@@ -221,6 +228,35 @@ function onFolderEllipsisClick(e) {
 	popupDiv.addEventListener("mouseleave", onMouseOutInPopupDiv);
 }
 
+function onTileMapsEllipsisClick(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	
+	const folderDetails = e.currentTarget.parentElement.parentElement;
+
+	const mouseX = e.clientX;
+	const mouseY = e.clientY;
+	
+	const urlParams = getUrlQueryParameters();
+
+	const addTileMapOpt = createPopUpOption("Add Tile Map", () => {redirectTo(`/world/tile-map-creator?world-id=${urlParams.get("world-id")}`)});
+	const addFolderOpt = createPopUpOption("Add Subfolder", function() {showDiv("#add-folder-hidden-div"); selectFolderOption(folderDetails.id, false)});
+
+	const popupDiv = document.createElement("div");
+	popupDiv.id = "popup-div";
+	popupDiv.classList.add("folder-popup");
+
+	popupDiv.style.left = `${mouseX - 20}px`;
+	popupDiv.style.top = `${mouseY - 20}px`;
+
+	popupDiv.appendChild(addTileMapOpt);
+	popupDiv.appendChild(addFolderOpt);
+
+	document.body.appendChild(popupDiv);
+
+	popupDiv.addEventListener("mouseleave", onMouseOutInPopupDiv);
+}
+
 worldSettingsBtn.addEventListener("click", onWorldSettingsClick);
 
 addFolderBtn.addEventListener("click", function(){showDiv("#add-folder-hidden-div")});
@@ -232,6 +268,10 @@ for(var i = 0; i < summaryLeftSpanElements.length; i++) {
 }
 
 for(var i = 0; i < ellipsisIcons.length; i++) {
+	if(ellipsisIcons[i].id == "tile-maps-ellipsis") {
+		ellipsisIcons[i].addEventListener("click", onTileMapsEllipsisClick, true);
+		continue;
+	}
 	ellipsisIcons[i].addEventListener("click", onFolderEllipsisClick, true);
 }
 
