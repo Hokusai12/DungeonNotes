@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for dungeon-notes on 2025-12-26T17:19:34-06:00
+# fly.toml app configuration file generated for dungeonnotes on 2025-12-27T00:29:31Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'dungeon-notes'
+app = 'dungeonnotes'
 primary_region = 'dfw'
 
 [build]
